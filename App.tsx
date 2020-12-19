@@ -24,7 +24,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header date="September"/>
-      <TextInput  style={{ height: 40, width: 200, borderColor: 'gray', borderWidth: 1 }} value={value} onChangeText={text => onChangeText(text)}/>
+      <View style={{backgroundColor: '#787B84'}}>
+      <TextInput  style={{ height: 40, width: 200, borderColor: '#787B84', borderWidth: 1}} value={value} onChangeText={text => onChangeText(text)} placeholder='Search' placeholderTextColor="white"/>
+      </View>
       <Text>Hi</Text>
     </View>
   );
@@ -33,7 +35,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0B0B0B',
     alignItems: 'center',
     justifyContent: 'center',
   },
