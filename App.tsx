@@ -8,7 +8,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { renameKeys } from "./utils/renameKeys";
-
+import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/AutocompleteSearchBar'
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
