@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput} from 'react-native';
 import {Hello} from "./components/Hello"
 import {Header} from './components/Header/Header'
 import {colors} from './utils/colors'
+
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
 // @ts-ignore
 import { API_KEY} from 'react-native-dotenv'  
 
@@ -31,8 +35,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header date="September"/>
-      <View style={{backgroundColor: '#787B84'}}>
-      <TextInput  style={{ height: 40, width: 200, borderColor: colors.codGrey, borderWidth: 1}} value={value} onChangeText={text => onChangeText(text)} placeholder='Search' placeholderTextColor="white"/>
+
+    <View style={{backgroundColor: colors.searchBackground, width: 275, borderRadius: 20, padding: 5}}>
+    <View style={{display: 'flex', flexDirection:  'row', alignItems: 'center'}}>
+     <FontAwesomeIcon icon={ faSearch } color={colors.gunsmokeGrey}/>
+      <TextInput  style={{ height: 35, width: 200, flex: 1, paddingLeft: 7}} value={value} onChangeText={text => onChangeText(text)} placeholder='Search' placeholderTextColor={colors.gunsmokeGrey}/>
+      </View>
       </View>
     </View>
   );

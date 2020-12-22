@@ -31,6 +31,7 @@ White
 
 [] Components & Initial structure
     - Searchbar
+        - Icons (magnifying glass, microphone)
     - Individual stock rows
         - Graph, price, and percent OR price change (toggle?)
 [] Chart -> What to use for charts?
