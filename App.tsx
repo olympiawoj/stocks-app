@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { renameKeys } from "./utils/renameKeys";
 import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/AutocompleteSearchBar'
+
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
@@ -56,7 +57,7 @@ export default function App() {
         >
           <FontAwesomeIcon icon={faSearch} color={colors.gunsmokeGrey} />
           <TextInput
-            style={{ height: 35, width: 200, flex: 1, paddingLeft: 7 }}
+            style={{ height: 35, width: 200, flex: 1, paddingLeft: 7, color: colors.gunsmokeGrey}}
             value={value}
             onChangeText={(text) => onChangeText(text)}
             placeholder="Search"
@@ -64,16 +65,7 @@ export default function App() {
             onSubmitEditing={(e) => handleSearch(e)}
           />
         </View>
-        <Text style={{ color: "white" }}>List</Text>
-        {filteredOptions && (
-          filteredOptions.map((option, idx) => {
-            return (
-              <>
-                <Text style={{ color: "white" }} key={idx + Date.now()}>{JSON.stringify(option)}</Text>
-              </>
-            );
-          })
-        )}
+        <AutocompleteSearchBar filteredOptions={filteredOptions}/>
       </View>
     </View>
   );
