@@ -1,4 +1,6 @@
-export const renameKeys = (quoteDataObj:any):void => {
+import { KeyboardAvoidingViewComponent } from "react-native";
+
+export const renameKeys = (bestMatchesArr:any):void => {
 //   const keysMap = {
 //     symbol: "01. symbol",
 //     open: "02. open",
@@ -11,12 +13,16 @@ export const renameKeys = (quoteDataObj:any):void => {
 //     changePnt: "09. change",
 //     changePercent: "10. change percent"
 //   };
+console.log(bestMatchesArr)
+//@ts-ignore
+bestMatchesArr.forEach((quoteDataObj => {
+    for (let key in quoteDataObj) {
+        console.log(`key: ${key}`)
+      const newKey = key.replace(/^\d+\.\s/, "");
+      console.log(`newKey: ${newKey}`)
+      quoteDataObj[newKey] = quoteDataObj[key];
+      delete quoteDataObj[key];
+    }
+}))
 
-  for (let key in quoteDataObj) {
-    const newKey = key.replace(/^\d+\.\s/, "");
-    quoteDataObj[newKey] = quoteDataObj[key];
-    delete quoteDataObj[key];
-  }
-
-  console.log("result", quoteDataObj);
 };

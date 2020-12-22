@@ -23,10 +23,13 @@ export default function App() {
     console.log("handleSearch running...");
     try {
       const response = await axios.get(searchURL);
-      console.log(response.data["bestMatches"]);
+      console.log(response);
+      const bestMatchesArr = response.data["bestMatches"]
       if (response.data) {
-        setFilteredOptions(response.data["bestMatches"]);
+        renameKeys(bestMatchesArr)
+        setFilteredOptions(bestMatchesArr);
       }
+      console.log(filteredOptions)
     } catch (error) {
       console.log("error", error);
     }
@@ -62,13 +65,15 @@ export default function App() {
           />
         </View>
         <Text style={{ color: "white" }}>List</Text>
-        {filteredOptions.map((option, idx) => {
-          return (
-            <>
-              <Text style={{ color: "white" }} key={idx}>{JSON.stringify(option)}</Text>
-            </>
-          );
-        })}
+        {filteredOptions && (
+          filteredOptions.map((option, idx) => {
+            return (
+              <>
+                <Text style={{ color: "white" }} key={idx + Date.now()}>{JSON.stringify(option)}</Text>
+              </>
+            );
+          })
+        )}
       </View>
     </View>
   );
