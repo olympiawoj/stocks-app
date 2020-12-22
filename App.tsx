@@ -7,26 +7,29 @@ import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import {renameKeys} from './utils/renameKeys'
 
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
 export default function App() {
   const [value, onChangeText] = useState("");
-
-  interface Person {
-    firstName: string;
-    lastName: string;
-  }
+  const [filteredOptions, setFilteredOptions] = useState([])
 
   const searchValue = "AAPL";
-  const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchValue}&apikey=${API_KEY}`;
-  axios
-    .get(searchURL)
-    .then((res) => console.log(res.data))
-    .catch((err) => console.log(err));
-  console.log(API_KEY);
-  console.log("hi");
+  const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
+
+  const handleSearch = async (e:any) =>{
+    console.log('handleSearch running...')
+    try {
+      const data = await axios.get(searchURL)
+      console.log(data)
+      return data
+    }
+    catch(error){
+      console.log('error',error)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -54,6 +57,7 @@ export default function App() {
             onChangeText={(text) => onChangeText(text)}
             placeholder="Search"
             placeholderTextColor={colors.gunsmokeGrey}
+            onSubmitEditing={e => handleSearch(e)}
           />
         </View>
       </View>
