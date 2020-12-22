@@ -2,11 +2,15 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import {Hello} from "./components/Hello"
 import {Header} from './components/Header/Header'
+import {colors} from './utils/colors'
+// @ts-ignore
+import { API_KEY} from 'react-native-dotenv'  
 
 
 export default function App() {
 
   const [value, onChangeText] = useState('')
+
 
   interface Person {
     firstName: string;
@@ -20,14 +24,16 @@ export default function App() {
   let user = {firstName: "Jane", lastName: "User"};
   console.log(greeter(user))
 
+  console.log(API_KEY)
+  console.log('hi')
+
   
   return (
     <View style={styles.container}>
       <Header date="September"/>
       <View style={{backgroundColor: '#787B84'}}>
-      <TextInput  style={{ height: 40, width: 200, borderColor: '#787B84', borderWidth: 1}} value={value} onChangeText={text => onChangeText(text)} placeholder='Search' placeholderTextColor="white"/>
+      <TextInput  style={{ height: 40, width: 200, borderColor: colors.codGrey, borderWidth: 1}} value={value} onChangeText={text => onChangeText(text)} placeholder='Search' placeholderTextColor="white"/>
       </View>
-      <Text>Hi</Text>
     </View>
   );
 }
