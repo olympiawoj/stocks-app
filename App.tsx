@@ -24,10 +24,13 @@ export default function App() {
     try {
       const response = await axios.get(searchURL);
       console.log(response);
-      const bestMatchesArr = response.data["bestMatches"]
       if (response.data) {
+        const bestMatchesArr = response.data["bestMatches"]
         renameKeys(bestMatchesArr)
-        setFilteredOptions(bestMatchesArr);
+        //@ts-ignore
+        const filteredMatchesArr = bestMatchesArr.filter(obj => (parseFloat(obj.matchScore, 10)  > 0.20) && (obj.region === 'United States'))
+        console.log(`filteredOptionsMatches: ${filteredMatchesArr}`)
+        setFilteredOptions(filteredMatchesArr);
       }
     } catch (error) {
       console.log("error", error);
@@ -41,7 +44,6 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Header date="September" />
 
       <View
         style={{
@@ -70,9 +72,10 @@ export default function App() {
             placeholderTextColor={colors.gunsmokeGrey}
             onSubmitEditing={(e) => handleSearch(e)}
           />
-           {(filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
+           {(filteredOptions && filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
         </View>
       </View>
+      <Text style={{color: 'white'}}>Symbols</Text>
       <AutocompleteSearchBar filteredOptions={filteredOptions}/>
     </View>
   );

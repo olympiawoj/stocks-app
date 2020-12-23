@@ -17,9 +17,7 @@ console.log(bestMatchesArr)
 //@ts-ignore
 bestMatchesArr.forEach((quoteDataObj => {
     for (let key in quoteDataObj) {
-        console.log(`key: ${key}`)
       const newKey = key.replace(/^\d+\.\s/, "");
-      console.log(`newKey: ${newKey}`)
       quoteDataObj[newKey] = quoteDataObj[key];
       delete quoteDataObj[key];
     }
