@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
 import { Hello } from "./components/Hello";
 import { Header } from "./components/Header/Header";
 import { colors } from "./utils/colors";
@@ -14,10 +14,9 @@ import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/Autocomp
 import { API_KEY } from "react-native-dotenv";
 
 export default function App() {
-  const [value, onChangeText] = useState("");
+  const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
 
-  const searchValue = "AAPL";
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
 
   const handleSearch = async (e: any) => {
@@ -30,11 +29,15 @@ export default function App() {
         renameKeys(bestMatchesArr)
         setFilteredOptions(bestMatchesArr);
       }
-      console.log(filteredOptions)
     } catch (error) {
       console.log("error", error);
     }
   };
+
+  const handleCancelSearch = ()=>{
+    setFilteredOptions([])
+    setValue('')
+  }
 
   return (
     <View style={styles.container}>
@@ -62,12 +65,12 @@ export default function App() {
           <TextInput
             style={{ height: 35, width: 200, flex: 1, paddingLeft: 7, color: colors.gunsmokeGrey}}
             value={value}
-            onChangeText={(text) => onChangeText(text)}
+            onChangeText={(text) => setValue(text)}
             placeholder="Search"
             placeholderTextColor={colors.gunsmokeGrey}
             onSubmitEditing={(e) => handleSearch(e)}
           />
-           {filteredOptions  &&          <FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} />}
+           {(filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
         </View>
       </View>
       <AutocompleteSearchBar filteredOptions={filteredOptions}/>

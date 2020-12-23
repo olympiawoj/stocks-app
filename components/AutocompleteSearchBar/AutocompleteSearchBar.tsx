@@ -16,14 +16,13 @@ export const AutocompleteSearchBar = ({filteredOptions}) =>{
     )
     return (
         <>
-        <SafeAreaView style={{width: '90%'}}>
-        <FlatList
-         data={filteredOptions}
-         renderItem={renderItem}
-         keyExtractor={item => item.id}
-        
-        />
-        </SafeAreaView>
+            <SafeAreaView style={{width: '90%'}}>
+                <FlatList
+                data={filteredOptions}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                />
+            </SafeAreaView>
         </>
     )
 }
