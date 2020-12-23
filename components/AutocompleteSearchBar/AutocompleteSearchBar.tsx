@@ -1,20 +1,27 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
+import { colors } from '../../utils/colors';
 
 //@ts-ignore
 export const AutocompleteSearchBar = ({filteredOptions}) =>{
+    //@ts-ignore
+    const renderItem = ({item})=>(
+
+        <View style={{borderBottomColor: colors.codGrey, borderBottomWidth: 0.5}}>
+                <Text style={{ color: "white" }} key={`${item.name} - ${Date.now()}`}>{item.symbol}</Text>
+                 <Text style={{color: colors.gunsmokeGrey}}>{item.name}</Text>
+        </View>
+    )
     return (
         <>
-        {filteredOptions && (
-        //@ts-ignore
-          filteredOptions.map((option, idx) => {
-            return (
-              <>
-                <Text style={{ color: "white" }} key={`${idx} - ${Date.now()}`}>{JSON.stringify(option)}</Text>
-              </>
-            );
-          })
-        )}
+        <SafeAreaView>
+        <FlatList
+         data={filteredOptions}
+         renderItem={renderItem}
+         keyExtractor={item => item.id}
+        
+        />
+        </SafeAreaView>
         </>
     )
 }
