@@ -6,7 +6,7 @@ import { colors } from "./utils/colors";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { renameKeys } from "./utils/renameKeys";
 import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/AutocompleteSearchBar'
 
@@ -43,9 +43,10 @@ export default function App() {
       <View
         style={{
           backgroundColor: colors.searchBackground,
-          width: 275,
+          width: '90%',
           borderRadius: 20,
           padding: 5,
+          marginBottom: 20
         }}
       >
         <View
@@ -53,7 +54,9 @@ export default function App() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            width: '100%'
           }}
+          
         >
           <FontAwesomeIcon icon={faSearch} color={colors.gunsmokeGrey} />
           <TextInput
@@ -64,9 +67,10 @@ export default function App() {
             placeholderTextColor={colors.gunsmokeGrey}
             onSubmitEditing={(e) => handleSearch(e)}
           />
+           {filteredOptions  &&          <FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} />}
         </View>
-        <AutocompleteSearchBar filteredOptions={filteredOptions}/>
       </View>
+      <AutocompleteSearchBar filteredOptions={filteredOptions}/>
     </View>
   );
 }
@@ -77,5 +81,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#0B0B0B",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: '20%'
   },
 });
