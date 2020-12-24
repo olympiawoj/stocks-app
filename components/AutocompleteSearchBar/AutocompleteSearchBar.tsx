@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
 import { colors } from "../../utils/colors";
 
@@ -12,10 +12,12 @@ interface filteredOptions {
     timezone: string;
     currency: string;
     matchScore: string;
+    price?:string;
 }
 
 //@ts-ignore
 export const AutocompleteSearchBar = ({ filteredOptions }) => {
+
   //@ts-ignore
   const renderItem = ({ item }) => (
     <View
@@ -26,7 +28,10 @@ export const AutocompleteSearchBar = ({ filteredOptions }) => {
       }}
       key={`${item.name} - ${Date.now()}`}
     >
+      <View style={{display: 'flex', flexDirection: 'row', alignContent: 'space-between'}}>
       <Text style={{ color: "white" }}>{item.symbol}</Text>
+      <Text style={{ color: "white" }}>{item.price}</Text>
+      </View>
       <Text style={{ color: colors.gunsmokeGrey }}>{item.name}</Text>
     </View>
   );
@@ -36,7 +41,8 @@ export const AutocompleteSearchBar = ({ filteredOptions }) => {
         <FlatList
           data={filteredOptions}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.symbol}
+          extraData={filteredOptions}
         />
       </SafeAreaView>
     </>

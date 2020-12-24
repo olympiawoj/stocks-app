@@ -7,8 +7,23 @@ import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSearch, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { renameKeys } from "./utils/renameKeys";
+import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
 import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/AutocompleteSearchBar'
+
+interface filteredOptions {
+  symbol: string;
+  name: string;
+  type: string;
+  region: string;
+  marketOpen: string;
+  marketClose: string;
+  timezone: string;
+  currency: string;
+  matchScore: string;
+  price?:string;
+  filteredOptions?:object;
+}
+
 
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
@@ -16,26 +31,45 @@ import { API_KEY } from "react-native-dotenv";
 export default function App() {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
+  
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
 
   const handleSearch = async (e: any) => {
-    console.log("handleSearch running...");
     try {
       const response = await axios.get(searchURL);
-      console.log(response);
       if (response.data) {
         const bestMatchesArr = response.data["bestMatches"]
-        renameKeys(bestMatchesArr)
+        renameKeysArr(bestMatchesArr)
         //@ts-ignore
         const filteredMatchesArr = bestMatchesArr.filter(obj => (parseFloat(obj.matchScore, 10)  > 0.20) && (obj.region === 'United States'))
-        console.log(`filteredOptionsMatches: ${filteredMatchesArr}`)
+        filteredMatchesArr.forEach( async (obj: filteredOptions) => {
+          const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${obj.symbol}&apikey=${API_KEY}`
+          const price = await handleQuote(obj.symbol, quoteURL)
+          console.log('price', price)
+          obj.price = price
+
+
+        })
+        console.log(filteredMatchesArr)
         setFilteredOptions(filteredMatchesArr);
       }
     } catch (error) {
       console.log("error", error);
     }
   };
+  const handleQuote= async (ticker: string, quoteURL: string)=> {
+    try {
+      const response = await axios.get(quoteURL)
+      const searchObj = response.data["Global Quote"]
+      renameKeysObj(searchObj)
+      return searchObj.price
+        
+    } 
+    catch(error){
+      console.log(error)
+    }
+  }
 
   const handleCancelSearch = ()=>{
     setFilteredOptions([])
