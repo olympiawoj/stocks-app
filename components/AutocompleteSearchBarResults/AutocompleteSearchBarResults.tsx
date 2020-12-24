@@ -30,7 +30,6 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices }) => {
         }}
         key={`${item.name} - ${Date.now()}`}
       >
-            <Text style={{color: 'white'}}>Symbols</Text>
             <View
               style={{
                 display: "flex",
@@ -63,6 +62,8 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices }) => {
   return (
     <>
       <SafeAreaView style={{ width: "90%" }}>
+      <Text style={{color: 'white', fontSize: 25, fontWeight: '600'}}>Symbols</Text>
+
         <FlatList
           data={filteredOptions}
           renderItem={renderItem}

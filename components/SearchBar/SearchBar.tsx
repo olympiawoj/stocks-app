@@ -13,10 +13,11 @@ export const SearchBar = ({ value, setValue, filteredOptions, handleSearch, hand
     <View
     style={{
       backgroundColor: colors.searchBackground,
-      width: '90%',
+      width: '100%',
       borderRadius: 20,
       padding: 5,
       marginBottom: 20
+      
     }}
   >
     <View
