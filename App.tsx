@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import { Hello } from "./components/Hello";
-import { Header } from "./components/Header/Header";
 import { colors } from "./utils/colors";
 import axios from "axios";
 
