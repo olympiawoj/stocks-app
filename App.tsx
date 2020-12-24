@@ -98,11 +98,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: "white", fontSize: 25, fontWeight: "600", paddingBottom: 0}}>
+      <Text style={{ color: "white", fontSize: 25, fontWeight: "800"}}>
         Stocks
       </Text>
       <Text
-        style={{ color: colors.gunsmokeGrey, fontSize: 25, fontWeight: "600" }}
+        style={{ color: colors.gunsmokeGrey, fontSize: 25, fontWeight: "800", marginBottom: 10}}
       >
         {new Date().toLocaleDateString(undefined, options)}
       </Text>
