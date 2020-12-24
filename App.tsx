@@ -31,6 +31,7 @@ import { API_KEY } from "react-native-dotenv";
 export default function App() {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
+  const [prices, setPrices] = useState([])
   
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
@@ -42,14 +43,18 @@ export default function App() {
         const bestMatchesArr = response.data["bestMatches"]
         renameKeysArr(bestMatchesArr)
         //@ts-ignore
-        const filteredMatchesArr = bestMatchesArr.filter(obj => (parseFloat(obj.matchScore, 10)  > 0.20) && (obj.region === 'United States'))
+        let filteredMatchesArr = bestMatchesArr.filter(obj => (parseFloat(obj.matchScore, 10)  > 0.20) && (obj.region === 'United States') )
         filteredMatchesArr.forEach( async (obj: filteredOptions) => {
           const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${obj.symbol}&apikey=${API_KEY}`
-          const price = await handleQuote(obj.symbol, quoteURL)
-          console.log('price', price)
+          const price = await handleQuote(quoteURL)
+          console.log(`ticker: ${obj.symbol}, price: ${price}`)
+          setPrices((prices)=>{
+            return {
+              ...prices,
+              price
+            }
+          })
           obj.price = price
-
-
         })
         console.log(filteredMatchesArr)
         setFilteredOptions(filteredMatchesArr);
@@ -58,13 +63,14 @@ export default function App() {
       console.log("error", error);
     }
   };
-  const handleQuote= async (ticker: string, quoteURL: string)=> {
+  const handleQuote= async (quoteURL: string)=> {
     try {
       const response = await axios.get(quoteURL)
       const searchObj = response.data["Global Quote"]
       renameKeysObj(searchObj)
-      return searchObj.price
-        
+      if(searchObj.price){
+        return searchObj.price
+      } 
     } 
     catch(error){
       console.log(error)
@@ -110,7 +116,7 @@ export default function App() {
         </View>
       </View>
       <Text style={{color: 'white'}}>Symbols</Text>
-      <AutocompleteSearchBar filteredOptions={filteredOptions}/>
+      <AutocompleteSearchBar filteredOptions={filteredOptions} prices={prices}/>
     </View>
   );
 }

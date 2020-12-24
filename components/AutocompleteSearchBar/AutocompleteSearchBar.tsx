@@ -16,8 +16,8 @@ interface filteredOptions {
 }
 
 //@ts-ignore
-export const AutocompleteSearchBar = ({ filteredOptions }) => {
-
+export const AutocompleteSearchBar = ({ filteredOptions, prices }) => {
+  console.log(filteredOptions)
   //@ts-ignore
   const renderItem = ({ item }) => (
     <View
@@ -42,7 +42,7 @@ export const AutocompleteSearchBar = ({ filteredOptions }) => {
           data={filteredOptions}
           renderItem={renderItem}
           keyExtractor={(item) => item.symbol}
-          extraData={filteredOptions}
+          extraData={prices}
         />
       </SafeAreaView>
     </>
