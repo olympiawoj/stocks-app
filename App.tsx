@@ -22,6 +22,7 @@ interface filteredOptions {
   matchScore: string;
   price?:string;
   filteredOptions?:object;
+  companyOverview?:object
 }
 
 
@@ -45,16 +46,18 @@ export default function App() {
         //@ts-ignore
         let filteredMatchesArr = bestMatchesArr.filter(obj => (parseFloat(obj.matchScore, 10)  > 0.20) && (obj.region === 'United States') )
         filteredMatchesArr.forEach( async (obj: filteredOptions) => {
-          const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${obj.symbol}&apikey=${API_KEY}`
-          const price = await handleQuote(quoteURL)
-          console.log(`ticker: ${obj.symbol}, price: ${price}`)
-          setPrices((prices)=>{
-            return {
-              ...prices,
-              price
-            }
-          })
+          const price = await handleQuote(obj.symbol)
+          // const companyOverview = await handleCompanyOverview(obj.symbol)
           obj.price = price
+          // obj.companyOverview = companyOverview
+          if(price){
+            setPrices((prices)=>{
+              return {
+                ...prices,
+                price
+              }
+            })
+          }
         })
         console.log(filteredMatchesArr)
         setFilteredOptions(filteredMatchesArr);
@@ -63,7 +66,9 @@ export default function App() {
       console.log("error", error);
     }
   };
-  const handleQuote= async (quoteURL: string)=> {
+
+  const handleQuote= async (ticker: string)=> {
+    const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${API_KEY}`
     try {
       const response = await axios.get(quoteURL)
       const searchObj = response.data["Global Quote"]
@@ -72,6 +77,20 @@ export default function App() {
         return searchObj.price
       } 
     } 
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const handleCompanyOverview = async( ticker: string)=>{
+    const quoteURL = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${API_KEY}`
+    try {
+      const response = await axios.get(quoteURL)
+      console.log(response.data)
+      // const searchObj = response.data["Global Quote"]
+      // renameKeysObj(searchObj)
+      return response.data
+    }
     catch(error){
       console.log(error)
     }
@@ -116,7 +135,7 @@ export default function App() {
         </View>
       </View>
       <Text style={{color: 'white'}}>Symbols</Text>
-      <AutocompleteSearchBar filteredOptions={filteredOptions} prices={prices}/>
+     {filteredOptions && filteredOptions.length > 0 &&  <AutocompleteSearchBar filteredOptions={filteredOptions} prices={prices}/>}
     </View>
   );
 }

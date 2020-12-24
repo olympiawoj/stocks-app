@@ -1,40 +1,69 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
 import { colors } from "../../utils/colors";
 
 interface filteredOptions {
-    symbol: string;
-    name: string;
-    type: string;
-    region: string;
-    marketOpen: string;
-    marketClose: string;
-    timezone: string;
-    currency: string;
-    matchScore: string;
-    price?:string;
+  symbol: string;
+  name: string;
+  type: string;
+  region: string;
+  marketOpen: string;
+  marketClose: string;
+  timezone: string;
+  currency: string;
+  matchScore: string;
+  price?: string;
 }
 
 //@ts-ignore
 export const AutocompleteSearchBar = ({ filteredOptions, prices }) => {
-  console.log(filteredOptions)
+  console.log(filteredOptions);
   //@ts-ignore
-  const renderItem = ({ item }) => (
-    <View
-      style={{
-        borderBottomColor: colors.gunsmokeGrey,
-        borderBottomWidth: 0.5,
-        padding: 7,
-      }}
-      key={`${item.name} - ${Date.now()}`}
-    >
-      <View style={{display: 'flex', flexDirection: 'row', alignContent: 'space-between'}}>
-      <Text style={{ color: "white" }}>{item.symbol}</Text>
-      <Text style={{ color: "white" }}>{item.price}</Text>
+  const renderItem = ({ item }) => {
+    // if("Note" in item.companyOverview){
+    //   return (
+    //     <Text style={{color: 'white'}}>API Limit Reached</Text>
+    //   )
+    // }
+    console.log(item.companyOverview)
+    return (
+      <View
+        style={{
+          borderBottomColor: colors.gunsmokeGrey,
+          borderBottomWidth: 0.5,
+          padding: 7,
+        }}
+        key={`${item.name} - ${Date.now()}`}
+      >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: "white" }}>{item.symbol}</Text>
+              <Text style={{ color: "white" }}>{item.price}</Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: colors.gunsmokeGrey }}>{item.name}</Text>
+              {/* <Text style={{ color: colors.gunsmokeGrey }}>
+                {(Number(
+                  item.companyOverview["MarketCapitalization"]) / 1000000000000)
+                .toFixed(2) + "T" || ''}
+              </Text> */}
+            </View>
+
       </View>
-      <Text style={{ color: colors.gunsmokeGrey }}>{item.name}</Text>
-    </View>
-  );
+    );
+  };
+
   return (
     <>
       <SafeAreaView style={{ width: "90%" }}>
