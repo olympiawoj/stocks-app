@@ -6,7 +6,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSearch, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
-import {AutocompleteSearchBar} from './components/AutocompleteSearchBar/AutocompleteSearchBar'
+import {AutocompleteSearchBarResults} from './components/AutocompleteSearchBarResults/AutocompleteSearchBarResults'
+import {  SearchBar} from './components/SearchBar/SearchBar'
 
 interface filteredOptions {
   symbol: string;
@@ -101,39 +102,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-
-      <View
-        style={{
-          backgroundColor: colors.searchBackground,
-          width: '90%',
-          borderRadius: 20,
-          padding: 5,
-          marginBottom: 20
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: '100%'
-          }}
-          
-        >
-          <FontAwesomeIcon icon={faSearch} color={colors.gunsmokeGrey} />
-          <TextInput
-            style={{ height: 35, width: 200, flex: 1, paddingLeft: 7, color: colors.gunsmokeGrey}}
-            value={value}
-            onChangeText={(text) => setValue(text)}
-            placeholder="Search"
-            placeholderTextColor={colors.gunsmokeGrey}
-            onSubmitEditing={(e) => handleSearch(e)}
-          />
-           {(filteredOptions && filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
-        </View>
-      </View>
-      <Text style={{color: 'white'}}>Symbols</Text>
-     {filteredOptions && filteredOptions.length > 0 &&  <AutocompleteSearchBar filteredOptions={filteredOptions} prices={prices}/>}
+      <SearchBar value={value} setValue={setValue} filteredOptions={filteredOptions} handleSearch={handleSearch} handleCancelSearch={handleCancelSearch}/>
+     {filteredOptions && filteredOptions.length > 0 &&  <AutocompleteSearchBarResults filteredOptions={filteredOptions} prices={prices}/>}
     </View>
   );
 }

@@ -16,15 +16,10 @@ interface filteredOptions {
 }
 
 //@ts-ignore
-export const AutocompleteSearchBar = ({ filteredOptions, prices }) => {
+export const AutocompleteSearchBarResults = ({ filteredOptions, prices }) => {
   console.log(filteredOptions);
   //@ts-ignore
   const renderItem = ({ item }) => {
-    // if("Note" in item.companyOverview){
-    //   return (
-    //     <Text style={{color: 'white'}}>API Limit Reached</Text>
-    //   )
-    // }
     console.log(item.companyOverview)
     return (
       <View
@@ -35,6 +30,7 @@ export const AutocompleteSearchBar = ({ filteredOptions, prices }) => {
         }}
         key={`${item.name} - ${Date.now()}`}
       >
+            <Text style={{color: 'white'}}>Symbols</Text>
             <View
               style={{
                 display: "flex",
