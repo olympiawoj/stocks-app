@@ -33,7 +33,7 @@ export default function App() {
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
 
-  const handleSearch = async (e: any) => {
+  const handleSearch = async () => {
     try {
       const response = await axios.get(searchURL);
       if (response.data) {
@@ -97,7 +97,6 @@ export default function App() {
   };
 
   const handleModalClose = () =>{
-    //@ts-ignore
     setIsModalVisible(isModalVisible =>{
       return !isModalVisible
     })

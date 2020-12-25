@@ -36,7 +36,7 @@ export const SearchBar = ({ value, setValue, filteredOptions, handleSearch, hand
         onChangeText={(text) => setValue(text)}
         placeholder="Search"
         placeholderTextColor={colors.gunsmokeGrey}
-        onSubmitEditing={(e) => handleSearch(e)}
+        onSubmitEditing={handleSearch}
       />
        {(filteredOptions && filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
     </View>
