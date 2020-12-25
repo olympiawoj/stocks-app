@@ -99,7 +99,7 @@ export default function App() {
   const handleModalClose = () =>{
     //@ts-ignore
     setIsModalVisible(isModalVisible =>{
-      !isModalVisible
+      return !isModalVisible
     })
   }
   
@@ -140,7 +140,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0B0B",
+    backgroundColor: colors.black,
     // justifyContent: "center",
     paddingTop: 100,
     padding: 15,

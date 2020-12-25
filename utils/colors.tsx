@@ -1,5 +1,7 @@
 export const colors ={
-    codGrey: '#0B0B0B',
+    black: '#0B0B0B',
+    codGrey: '#1D1D1D',
+    heavyMetalBlack: '#191C1A',
     emerald: '#36C55E',
     manatee: '#97999D',
     stormGray: '#787B84',
