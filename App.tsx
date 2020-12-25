@@ -5,6 +5,7 @@ import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
+import {SwipeableModal} from './components/Modal/Modal'
 
 interface filteredOptions {
   symbol: string;
@@ -28,6 +29,7 @@ export default function App() {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [prices, setPrices] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
 
@@ -94,6 +96,14 @@ export default function App() {
     setValue("");
   };
 
+  const handleModalClose = () =>{
+    //@ts-ignore
+    setIsModalVisible(isModalVisible =>{
+      !isModalVisible
+    })
+  }
+  
+
   const options = { month: "long", day: "numeric" };
 
   return (
@@ -118,9 +128,11 @@ export default function App() {
         <AutocompleteSearchBarResults
           filteredOptions={filteredOptions}
           prices={prices}
+          setModalVisible={setIsModalVisible}
         />
       )}
       </View>
+      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose}/>
     </View>
   );
 }

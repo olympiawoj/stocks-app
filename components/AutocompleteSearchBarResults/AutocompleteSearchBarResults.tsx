@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, FlatList, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight } from "react-native";
 import { colors } from "../../utils/colors";
 
 interface filteredOptions {
@@ -13,15 +13,16 @@ interface filteredOptions {
   currency: string;
   matchScore: string;
   price?: string;
+  setModalVisible:boolean;
 }
 
 //@ts-ignore
-export const AutocompleteSearchBarResults = ({ filteredOptions, prices }) => {
-  console.log(filteredOptions);
+export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible }) => {
   //@ts-ignore
   const renderItem = ({ item }) => {
-    console.log(item.companyOverview)
+
     return (
+      <TouchableHighlight onPress={()=>setModalVisible(true)}>
       <View
         style={{
           borderBottomColor: colors.gunsmokeGrey,
@@ -54,8 +55,8 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices }) => {
                 .toFixed(2) + "T" || ''}
               </Text> */}
             </View>
-
       </View>
+      </TouchableHighlight>
     );
   };
 
