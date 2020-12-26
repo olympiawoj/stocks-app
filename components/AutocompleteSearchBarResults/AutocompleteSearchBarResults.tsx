@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight } from "react-native";
 import { colors } from "../../utils/colors";
+import { Divider } from 'react-native-paper';
 
 interface filteredOptions {
   symbol: string;
@@ -36,48 +37,44 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModal
     return (
 
       //@ts-ignore
-      <TouchableHighlight onPress={(e)=>onRowPress(e, item)}>
-      <View
-        style={{
-          borderBottomColor: colors.gunsmokeGrey,
-          borderBottomWidth: 0.5,
-          padding: 7,
-        }}
-        key={`${item.name} - ${Date.now()}`}
-      >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "white" }}>{item.symbol}</Text>
-              <Text style={{ color: "white" }}>{item.price}</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: colors.gunsmokeGrey }}>{item.name}</Text>
-              {/* <Text style={{ color: colors.gunsmokeGrey }}>
-                {(Number(
-                  item.companyOverview["MarketCapitalization"]) / 1000000000000)
-                .toFixed(2) + "T" || ''}
-              </Text> */}
-            </View>
-      </View>
-      </TouchableHighlight>
+        <TouchableHighlight onPress={(e)=>onRowPress(e, item)}>
+        <View
+          key={`${item.name} - ${Date.now()}`}
+        >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "white" }}>{item.symbol}</Text>
+                <Text style={{ color: "white" }}>{item.price}</Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: colors.gunsmokeGrey, marginBottom: 10 }}>{item.name}</Text>
+                {/* <Text style={{ color: colors.gunsmokeGrey }}>
+                  {(Number(
+                    item.companyOverview["MarketCapitalization"]) / 1000000000000)
+                  .toFixed(2) + "T" || ''}
+                </Text> */}
+              </View>
+              <Divider style={{backgroundColor:colors.codGrey}}/>
+        </View>
+        </TouchableHighlight>
     );
   };
 
   return (
     <>
       <SafeAreaView style={{ width: "90%" }}>
-      <Text style={{color: 'white', fontSize: 25, fontWeight: '600'}}>Symbols</Text>
+      <Text style={{color: 'white', fontSize: 25, fontWeight: '600', marginBottom: 10}}>Symbols</Text>
 
         <FlatList
           data={filteredOptions}

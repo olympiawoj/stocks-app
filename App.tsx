@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { AppRegistry } from 'react-native';
+
+import { Provider as PaperProvider } from 'react-native-paper';
 import axios from "axios";
 import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
@@ -123,6 +126,7 @@ export default function App() {
   const options = { month: "long", day: "numeric" };
 
   return (
+    <PaperProvider>
     <View style={styles.container}>
       <Text style={{ color: "white", fontSize: 25, fontWeight: "800"}}>
         Stocks
@@ -151,6 +155,7 @@ export default function App() {
       </View>
       <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>
     </View>
+    </PaperProvider>
   );
 }
 
@@ -166,3 +171,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 });
+
+
+AppRegistry.registerComponent('stocks', () => App);
