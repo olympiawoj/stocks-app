@@ -9,8 +9,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 interface SwipeableModal {
     isModalVisible: boolean;
     handleModalClose:any;
+    stockObjInfo: StockObjInfo;
 }
-export const SwipeableModal = ({isModalVisible, handleModalClose}:SwipeableModal)=>{
+
+interface StockObjInfo {
+    currency?: string;
+    marketClose?: string;
+    marketOpen?: string;
+    marketScore?: string;
+    name?: string;
+    region?: string;
+    symbol?: string;
+    timezone?: string;
+    type?: string;
+    price?: string;
+}
+
+export const SwipeableModal = ({isModalVisible, handleModalClose, stockObjInfo}:SwipeableModal)=>{
     return (
       <Modal
         backdropOpacity={0.7}
@@ -28,7 +43,14 @@ export const SwipeableModal = ({isModalVisible, handleModalClose}:SwipeableModal
                 <FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} />
             </TouchableOpacity>
             </View>
-            <Text style={styles.contentTitle}>AAPL</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: colors.gunsmokeGrey, paddingBottom: 10 }}>
+                <Text style={styles.contentTitle}>{stockObjInfo.symbol}</Text>
+                <Text style={{color: colors.gunsmokeGrey, fontWeight: '800'}} >{stockObjInfo.name}</Text>
+            </View>
+            <View style={{flexDirection: 'column', alignItems: 'flex-start', borderBottomWidth: 1, borderBottomColor: colors.gunsmokeGrey, paddingVertical: 15 }}>
+            <Text style={{color: 'white',  fontSize: 20, fontWeight: '800'}}>{stockObjInfo.price}</Text>
+            <Text style={{color: colors.gunsmokeGrey, fontWeight: '800'}} >At Close</Text>
+            </View>
             </View>
       </Modal>
     );
@@ -50,9 +72,10 @@ const styles = StyleSheet.create({
       padding: 20
     },
     contentTitle: {
-      fontSize: 25,
+      fontSize: 30,
       fontWeight: "800",
-      color: 'white'
+      color: 'white',
+      marginRight: 10
     },
     pressable: {
         height: '100%',

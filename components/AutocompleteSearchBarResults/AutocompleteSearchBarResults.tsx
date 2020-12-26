@@ -13,16 +13,30 @@ interface filteredOptions {
   currency: string;
   matchScore: string;
   price?: string;
-  setModalVisible:boolean;
 }
 
 //@ts-ignore
-export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible }) => {
+export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }) => {
+  const [itemInfo, setItemInfo] = useState('')
+  //@ts-ignore
+  const onRowPress = (e, item) => {
+    setModalVisible(true)
+    //@ts-ignore
+    // filteredOptions.forEach(option => {
+    //   console.log(option.symbol, option.name)
+    // })
+    console.log('on row press...')
+    // console.log(item)
+    setStockObjInfo(item)
+    
+  }
+
   //@ts-ignore
   const renderItem = ({ item }) => {
-
     return (
-      <TouchableHighlight onPress={()=>setModalVisible(true)}>
+
+      //@ts-ignore
+      <TouchableHighlight onPress={(e)=>onRowPress(e, item)}>
       <View
         style={{
           borderBottomColor: colors.gunsmokeGrey,

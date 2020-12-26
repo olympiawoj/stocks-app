@@ -22,12 +22,29 @@ interface filteredOptions {
   companyOverview?: object;
 }
 
+interface StockObjInfo {
+    currency: string;
+    marketClose: string;
+    marketOpen: string;
+    marketScore: string;
+    name: string;
+    region: string;
+    symbol: string;
+    timezone: string;
+    type: string;
+    price: string;
+}
+
+
+
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
 export default function App() {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
+  //@ts-ignore
+  const [stockObjInfo, setStockObjInfo] = useState({})
   const [prices, setPrices] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -128,10 +145,11 @@ export default function App() {
           filteredOptions={filteredOptions}
           prices={prices}
           setModalVisible={setIsModalVisible}
+          setStockObjInfo={setStockObjInfo}
         />
       )}
       </View>
-      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose}/>
+      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>
     </View>
   );
 }
