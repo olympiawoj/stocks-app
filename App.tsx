@@ -75,7 +75,7 @@ export default function App() {
             });
           }
         });
-        console.log(filteredMatchesArr);
+        // console.log(filteredMatchesArr);
         setFilteredOptions(filteredMatchesArr.slice(0, 4));
       }
     } catch (error) {

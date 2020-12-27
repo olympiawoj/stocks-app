@@ -8,7 +8,9 @@ import Modal from "react-native-modal";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
-
+import {  renameKeysObj } from "../../utils/renameKeys";
+import {StockChart} from '../StockChart/StockChart'
+import {XAxisScaleTimeExample} from '../TestChart'
 
 // @ts-ignore
 import { API_KEY } from "react-native-dotenv";
@@ -38,9 +40,9 @@ export const SwipeableModal = ({
   handleModalClose,
   stockObjInfo,
 }: SwipeableModal) => {
-    const [stockDailyPxHistory, setStockDailyPxHistory] = useState({})
+    const [stockDailyPxHistory, setStockDailyPxHistory] = useState([])
   
-    const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=full&apikey=${API_KEY}`;
+    const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
 
     
     //@ts-ignore
@@ -48,12 +50,34 @@ export const SwipeableModal = ({
         const fetchDailyAdjustedData = async () =>{
             try{
                 const response = await axios.get(dailyAdjustedURL);
-                console.log("META DATA.... OBJ")
-                console.log(response.data["Meta Data"])
+                // console.log("META DATA.... OBJ")
+                // console.log(response.data["Meta Data"]["2. Symbol"])
 
-                console.log("DAILY TIME SERIES..... OBJ")
-                console.log(response.data["Time Series (Daily)"])
-                
+                // console.log("DAILY TIME SERIES..... OBJ")
+                // console.log(response.data["Time Series (Daily)"])
+                let timeSeries = response.data["Time Series (Daily)"]
+                for (let [key, value] of Object.entries(timeSeries)) {
+                    // console.log(key)
+                    // console.log(value)
+                    value = renameKeysObj(value)
+                  }
+                //   console.log(timeSeries)
+
+                //   for(let [key, value] of Object.entries(timeSeries)){
+                //       //@ts-ignore
+                //       for(let [key, val] of Object.entries(value)){
+                //         //   console.log(key, val)
+                //           if(key == 'close'){
+                //             //   console.log(val)
+                //               //@ts-ignore
+                //             setStockDailyPxHistory(stockDailyPxHistory => [...stockDailyPxHistory, parseFloat(val, 10)])
+                //           }
+                //       }
+                //   }
+                setStockDailyPxHistory(timeSeries)
+                  
+                // console.log(stockDailyPxHistory)
+
             }catch(error){
                 console.log(error)
             }
@@ -106,7 +130,10 @@ export const SwipeableModal = ({
           </Text>
         </View>
         <Divider style={{ backgroundColor: colors.searchBackground }} />
+        <StockChart data={stockDailyPxHistory}/>
       </View>
+      
+       {/* <XAxisScaleTimeExample/> */}
     </Modal>
   );
 };
