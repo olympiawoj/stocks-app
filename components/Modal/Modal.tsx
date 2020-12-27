@@ -37,25 +37,30 @@ export const SwipeableModal = ({
   isModalVisible,
   handleModalClose,
   stockObjInfo,
-  prices
 }: SwipeableModal) => {
     const [stockDailyPxHistory, setStockDailyPxHistory] = useState({})
   
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=full&apikey=${API_KEY}`;
+
     
     //@ts-ignore
     useEffect( ()=>{
         const fetchDailyAdjustedData = async () =>{
             try{
                 const response = await axios.get(dailyAdjustedURL);
-                console.log(response.data)
+                console.log("META DATA.... OBJ")
+                console.log(response.data["Meta Data"])
+
+                console.log("DAILY TIME SERIES..... OBJ")
+                console.log(response.data["Time Series (Daily)"])
+                
             }catch(error){
                 console.log(error)
             }
         }
         fetchDailyAdjustedData()
 
-    }, [stockObjInfo.symbol, prices])
+    }, [stockObjInfo])
 
   return (
     <Modal

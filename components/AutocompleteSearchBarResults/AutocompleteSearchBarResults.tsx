@@ -18,7 +18,6 @@ interface filteredOptions {
 
 //@ts-ignore
 export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }) => {
-  const [itemInfo, setItemInfo] = useState('')
   //@ts-ignore
   const onRowPress = (e, item) => {
     setModalVisible(true)

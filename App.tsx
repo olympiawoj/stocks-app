@@ -152,7 +152,7 @@ export default function App() {
         />
       )}
       </View>
-      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo} prices={prices}/>
+      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>
     </View>
     </PaperProvider>
   );
