@@ -8,5 +8,6 @@ export const colors ={
     mandyRed: '#E75952',
     gunsmokeGrey: '#7C8484',
     white: '#fefefe',
-    searchBackground: 	'#35343c'
+    searchBackground: 	'#35343c',
+    darkGrey: '#2c2c2f'
 }

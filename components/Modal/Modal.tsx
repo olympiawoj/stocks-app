@@ -1,23 +1,23 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from "react-native";
+import * as React from "react"
+import {useEffect, useState} from "react"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../utils/colors";
+import axios from "axios";
 // @ts-ignore
 import Modal from "react-native-modal";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
 
+
+// @ts-ignore
+import { API_KEY } from "react-native-dotenv";
+
 interface SwipeableModal {
   isModalVisible: boolean;
   handleModalClose: any;
   stockObjInfo: StockObjInfo;
+  prices?: any
 }
 
 interface StockObjInfo {
@@ -37,7 +37,26 @@ export const SwipeableModal = ({
   isModalVisible,
   handleModalClose,
   stockObjInfo,
+  prices
 }: SwipeableModal) => {
+    const [stockDailyPxHistory, setStockDailyPxHistory] = useState({})
+  
+    const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=full&apikey=${API_KEY}`;
+    
+    //@ts-ignore
+    useEffect( ()=>{
+        const fetchDailyAdjustedData = async () =>{
+            try{
+                const response = await axios.get(dailyAdjustedURL);
+                console.log(response.data)
+            }catch(error){
+                console.log(error)
+            }
+        }
+        fetchDailyAdjustedData()
+
+    }, [stockObjInfo.symbol, prices])
+
   return (
     <Modal
       backdropOpacity={0.7}
@@ -47,7 +66,7 @@ export const SwipeableModal = ({
       onSwipeComplete={handleModalClose}
       useNativeDriverForBackdrop
       swipeDirection={["down"]}
-    >
+    >   
       <View style={styles.content}>
         <View style={styles.view}>
           <TouchableOpacity onPressIn={handleModalClose}>

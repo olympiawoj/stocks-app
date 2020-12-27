@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AppRegistry } from 'react-native';
-
-import { Provider as PaperProvider } from 'react-native-paper';
 import axios from "axios";
+import { Provider as PaperProvider } from 'react-native-paper';
 import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
 import { SearchBar } from "./components/SearchBar/SearchBar";
@@ -153,7 +152,7 @@ export default function App() {
         />
       )}
       </View>
-      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>
+      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo} prices={prices}/>
     </View>
     </PaperProvider>
   );
