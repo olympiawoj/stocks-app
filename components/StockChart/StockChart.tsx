@@ -4,11 +4,12 @@ import { LineChart, Grid, XAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 import * as shape from 'd3-shape'
 import * as dateFns from 'date-fns'
+import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 
 //@ts-ignore
 export const StockChart = ({data}) =>{
     const numbers = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80]
-
+    const prices:number[] = []
 
     const [stockData, setStockData] = useState<any[]>([])
 
@@ -22,13 +23,16 @@ export const StockChart = ({data}) =>{
             // console.log(key)
             // console.log(value)
 
+            //@ts-ignore
+            let newPrice = Math.floor(parseInt(value["close"]), 0) 
+            console.log(newPrice)
             const newObj  = {
                 date: dateFns.format(new Date(key), 'yyyy-MM-dd'),
                 //@ts-ignore
-                price: value["close"]
+                price: newPrice
             }
             // console.log(newObj)
-            stockDataArr.push(newObj)
+            newObj.price && stockDataArr.push(newObj)
           }
           //@ts-ignore
          setStockData(stockDataArr)
@@ -40,19 +44,17 @@ export const StockChart = ({data}) =>{
     return (
         <View>
         <LineChart
-            style={{ height: 200, width: 300}}
+            style={{ height: 200, width: 330}}
             data={stockData}
             svg={{ stroke: 'rgb(134, 65, 244)' }}
-            contentInset={{ top: 20, bottom: 20 }}
+            contentInset={{ top: 10, bottom: 10 }}
             xScale={ scale.scaleTime }
-            //@ts-ignore
-            xAccessor={({item}) => item.date}
-                //@ts-ignore
+
             yAccessor={({item}) => item.price}
-            // formatLabel={({item}) => `${item.date}`}}
         >
             <Grid />
-            {/* <XAxis
+            </LineChart>
+            <XAxis
                     data={ stockData }
                     svg={{
                         fill: 'black',
@@ -63,15 +65,16 @@ export const StockChart = ({data}) =>{
                         // y: 5,
                     }}
                     //@ts-ignore
-                    xAccessor={ ({ item }) => item.date }
                     scale={ scale.scaleTime }
-                    numberOfTicks={ 100 }
+                    numberOfTicks={ 20 }
                     style={{ marginHorizontal: -15, height: 50 }}
                     contentInset={{ left: 10, right: 25 }}
-                    // formatLabel={ (date) => date }
+                    formatLabel={ (value, index) => {
+                        if(index % 2) return stockData[index].date 
+                        else return ''
+                    }} 
                     
-                /> */}
-        </LineChart>
+                />
         </View>
     )
 }
