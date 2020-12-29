@@ -28,7 +28,7 @@ export const StockChart = ({data}) =>{
             newObj.price && stockDataArr.unshift(newObj)
           }
           //@ts-ignore
-         setStockData(stockDataArr)
+         setStockData(stockDataArr.slice(70, 100))
     }, [data])
 
     console.log("STOCK DATA....")
@@ -45,7 +45,9 @@ export const StockChart = ({data}) =>{
 
             yAccessor={({item}) => item.price}
         >
-            <Grid />
+            <Grid svg={{
+                fill: colors.searchBackground
+            }}/>
             </LineChart>
             <XAxis
                     data={ stockData }
@@ -59,7 +61,7 @@ export const StockChart = ({data}) =>{
                     }}
                     //@ts-ignore
                     scale={ scale.scaleTime }
-                    numberOfTicks={30 }
+                    numberOfTicks={15}
                     style={{ marginHorizontal: -15, height: 50 }}
                     contentInset={{ left: 10, right: 25 }}
                     formatLabel={ (value, index) => {
