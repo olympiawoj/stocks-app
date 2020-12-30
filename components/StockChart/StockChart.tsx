@@ -20,7 +20,7 @@ export const StockChart = ({data}) =>{
             let newPrice = Math.floor(parseInt(value["close"]), 2) 
             console.log(newPrice)
             const newObj  = {
-                date: dateFns.format(new Date(key), 'MMM/dd'),
+                date: dateFns.format(new Date(key), 'MMM'),
                 //@ts-ignore
                 price: newPrice
             }
@@ -32,7 +32,7 @@ export const StockChart = ({data}) =>{
     }, [data])
 
     console.log("STOCK DATA....")
-    console.log(stockData)
+    console.log(stockData[0], stockData[stockData.length -1])
 
     return (
         <View>
@@ -46,14 +46,14 @@ export const StockChart = ({data}) =>{
             yAccessor={({item}) => item.price}
         >
             <Grid svg={{
-                fill: colors.searchBackground
+                stroke: colors.searchBackground
             }}/>
             </LineChart>
             <XAxis
                     data={ stockData }
                     svg={{
                         fill: 'white',
-                        fontSize: 8,
+                        fontSize: 7,
                         fontWeight: 'bold',
                         rotation: 0,
                         originY: 30,
@@ -61,11 +61,12 @@ export const StockChart = ({data}) =>{
                     }}
                     //@ts-ignore
                     scale={ scale.scaleTime }
-                    numberOfTicks={15}
+                    numberOfTicks={10}
                     style={{ marginHorizontal: -15, height: 50 }}
                     contentInset={{ left: 10, right: 25 }}
                     formatLabel={ (value, index) => {
-                        if(index % 2) return stockData[index].date
+                        console.log(`value: ${value}`)
+                        if(index % 2 != 0) return stockData[index].date
                         else return ''
                     }} 
                     

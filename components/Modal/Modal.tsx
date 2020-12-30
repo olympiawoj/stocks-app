@@ -129,7 +129,7 @@ export const SwipeableModal = ({
             At Close
           </Text>
         </View>
-        <Divider style={{ backgroundColor: colors.searchBackground }} />
+        <Divider style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }} />
         <StockChart data={stockDailyPxHistory}/>
       </View>
       
