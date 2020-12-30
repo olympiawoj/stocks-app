@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import {Text, View} from 'react-native'
-import { LineChart, Grid, XAxis } from 'react-native-svg-charts'
+import { AreaChart, LineChart, Grid, XAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 import * as shape from 'd3-shape'
 import * as dateFns from 'date-fns'
 import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 import {colors} from '../../utils/colors'
+
+import { Circle, G, Line, Rect, Text as SvgText } from 'react-native-svg'
 //@ts-ignore
 export const StockChart = ({data}) =>{
     const [stockData, setStockData] = useState<any[]>([])
@@ -20,7 +22,7 @@ export const StockChart = ({data}) =>{
             let newPrice = Math.floor(parseInt(value["close"]), 2) 
             console.log(newPrice)
             const newObj  = {
-                date: dateFns.format(new Date(key), 'MMM'),
+                date: dateFns.format(new Date(key), 'MMM-dd'),
                 //@ts-ignore
                 price: newPrice
             }
@@ -33,9 +35,30 @@ export const StockChart = ({data}) =>{
 
     console.log("STOCK DATA....")
     console.log(stockData[0], stockData[stockData.length -1])
+    //@ts-ignore
+    const Decorator = ({ x, y, stockData }:any) => {
+        //@ts-ignore
+        return stockData.map((value, index) => (
+            <Circle
+                key={ index }
+                cx={ x(index) }
+                cy={ y(value.price) }
+                r={ 4 }
+                stroke={ 'rgb(134, 65, 244)' }
+                fill={ 'white' }
+            />
+        ))
+    }
+    
+    
 
     return (
-        <View>
+        <AreaChart
+        style={{height: 200}}
+        data={stockData}
+        svg={{ fill: 'rgba(134, 65, 244, 0.2)' }}
+        contentInset={{ top: 20, bottom: 30 }}
+        >
         <LineChart
             style={{ height: 200, width: 330}}
             data={stockData}
@@ -48,6 +71,8 @@ export const StockChart = ({data}) =>{
             <Grid svg={{
                 stroke: colors.searchBackground
             }}/>
+
+            <Decorator stockData={stockData}/>
             </LineChart>
             <XAxis
                     data={ stockData }
@@ -60,8 +85,8 @@ export const StockChart = ({data}) =>{
                         y: 5,
                     }}
                     //@ts-ignore
-                    scale={ scale.scaleTime }
-                    numberOfTicks={10}
+                    // scale={ scale.scaleTime }
+                    numberOfTicks={5}
                     style={{ marginHorizontal: -15, height: 50 }}
                     contentInset={{ left: 10, right: 25 }}
                     formatLabel={ (value, index) => {
@@ -71,6 +96,6 @@ export const StockChart = ({data}) =>{
                     }} 
                     
                 />
-        </View>
+        </AreaChart>
     )
 }
