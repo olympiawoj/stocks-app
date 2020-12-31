@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Text, View} from 'react-native'
+import {Text as RNText, View} from 'react-native'
 import { AreaChart, LineChart, Grid, XAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 import * as shape from 'd3-shape'
@@ -7,7 +7,7 @@ import * as dateFns from 'date-fns'
 import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 import {colors} from '../../utils/colors'
 
-import { Circle, G, Line, Rect, Text as SvgText } from 'react-native-svg'
+import { Circle, G, Line, Rect, Text } from 'react-native-svg'
 //@ts-ignore
 export const StockChart = ({data}) =>{
     const [stockData, setStockData] = useState<any[]>([])
@@ -44,11 +44,58 @@ export const StockChart = ({data}) =>{
                 cx={ x(index) }
                 cy={ y(value.price) }
                 r={ 4 }
-                stroke={ 'rgb(134, 65, 244)' }
-                fill={ 'white' }
+                stroke={colors.emerald }
+                fill={ colors.emerald }
             />
         ))
     }
+
+    // //@ts-ignore
+    // const Tooltip = ({x, y, stockData}:any)=> {
+    //     console.log('stockData', stockData)
+    //     return (
+    //         <G
+    //         x={ x(5) - (75 / 2) }
+    //         key={ 'tooltip' }
+    //         onPress={ () => console.log('tooltip clicked') }
+    //     >
+    //         <G y={ 50 }>
+    //             <Rect
+    //                 height={ 40 }
+    //                 width={ 75 }
+    //                 stroke={ 'grey' }
+    //                 fill={ 'white' }
+    //                 ry={ 10 }
+    //                 rx={ 10 }
+    //             />
+    //             <Text
+    //                 x={ 75 / 2 }
+    //                 dy={ 20 }
+    //                 alignmentBaseline={ 'middle' }
+    //                 textAnchor={ 'middle' }
+    //                 stroke={ 'rgb(134, 65, 244)' }
+    //             >
+    //                 { `${stockData[5].price}` }
+    //             </Text>
+    //         </G>
+    //         <G x={ 75 / 2 }>
+    //             <Line
+    //                 y1={ 50 }
+    //                 y2={ (stockData[ 5 ].price) }
+    //                 stroke={ 'grey' }
+    //                 strokeWidth={ 2 }
+    //             />
+    //             <Circle
+    //                 cy={ (stockData[ 5 ]) }
+    //                 r={ 6 }
+    //                 stroke={ 'rgb(134, 65, 244)' }
+    //                 strokeWidth={ 2 }
+    //                 fill={ 'white' }
+    //             />
+    //         </G>
+    //     </G>
+    //     )
+    // }
     
     
 
@@ -73,6 +120,7 @@ export const StockChart = ({data}) =>{
             }}/>
 
             <Decorator stockData={stockData}/>
+            {/* <Tooltip stockData={stockData}/> */}
             </LineChart>
             <XAxis
                     data={ stockData }
