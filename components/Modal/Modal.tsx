@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
 import {  renameKeysObj } from "../../utils/renameKeys";
 import {StockChart} from '../StockChart/StockChart'
+import {ResponsiveStockChart} from '../ResponsiveStockChart/ResponsiveStockChart'
 import {XAxisScaleTimeExample} from '../TestChart'
 
 // @ts-ignore
@@ -83,6 +84,9 @@ export const SwipeableModal = ({
             }
         }
         fetchDailyAdjustedData()
+        return ()=>{
+            setStockDailyPxHistory([])
+        }
 
     }, [stockObjInfo])
 
@@ -130,7 +134,8 @@ export const SwipeableModal = ({
           </Text>
         </View>
         <Divider style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }} />
-        <StockChart data={stockDailyPxHistory}/>
+        {/* <StockChart data={stockDailyPxHistory}/> */}
+       { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory}/>}
       </View>
       
        {/* <XAxisScaleTimeExample/> */}
