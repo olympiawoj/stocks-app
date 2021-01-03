@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Chart, VerticalAxis, HorizontalAxis, Area, Line, Tooltip} from 'react-native-responsive-linechart'
 import * as dateFns from 'date-fns'
+import { colors } from '../../utils/colors'
 
 interface MyObject {
     x: string;
@@ -74,9 +75,9 @@ export const ResponsiveStockChart = ({data}:any)=>{
                  xDomain={{ min: 0, max: 100 }}
                  yDomain={{ min: 0, max: 150 }}
                >
-                 <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) } }} />
+                 <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} } }} />
                  
-                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) } }}/>
+                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) , label: {color: colors.manatee}} }}/>
                  <Area theme={{ gradient: { from: { color: '#44bd32' }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
                    tooltipComponent={<Tooltip />}
