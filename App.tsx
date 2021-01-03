@@ -8,7 +8,6 @@ import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBar
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
 import {SwipeableModal} from './components/Modal/Modal'
-//@ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
 
