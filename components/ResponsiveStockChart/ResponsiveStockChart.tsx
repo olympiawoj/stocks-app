@@ -6,7 +6,7 @@ import { colors } from '../../utils/colors'
 interface MyObject {
     x: string;
     y: string;
-    date: string;
+    meta: string;
 }
 
 export const ResponsiveStockChart = ({data}:any)=>{
@@ -26,7 +26,7 @@ export const ResponsiveStockChart = ({data}:any)=>{
                 // x: dateFns.format(new Date(key), 'MMM-dd'),
                 x: i.toString(),
                 y: newPrice,
-                date: dateFns.format(new Date(key), 'MMM-dd')
+                meta: dateFns.format(new Date(key), 'MMM-dd')
 
             }
             // console.log(newObj)
@@ -75,13 +75,14 @@ export const ResponsiveStockChart = ({data}:any)=>{
                  xDomain={{ min: 0, max: 100 }}
                  yDomain={{ min: 0, max: 150 }}
                >
-                 <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} } }} />
+                 <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
                  
-                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) , label: {color: colors.manatee}} }}/>
-                 <Area theme={{ gradient: { from: { color: '#44bd32' }, to: { color: '#44bd32', opacity: 0.2 } } }} />
+                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter: (meta:any) => meta, label: {color: colors.manatee}}, ticks: {visible: false}  }}/>
+                 <Area theme={{ gradient: { from: { color: colors.emerald }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
+                   smoothing={"cubic-spline"}
                    tooltipComponent={<Tooltip />}
-                   theme={{ stroke: { color: '#44bd32', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 4, color: '#44ad32' }, selected: { color: 'white' } } }}
+                   theme={{ stroke: { color: colors.emerald, width: 5 }, scatter: {  selected: { width: 4, height: 4, rx: 4,color: 'white' } } }}
                  />
                </Chart>
         )}
