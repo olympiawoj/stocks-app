@@ -5,7 +5,6 @@ import * as dateFns from 'date-fns'
 interface MyObject {
     x: string;
     y: string;
-    date: string;
 }
 
 export const ResponsiveStockChart = ({data}:any)=>{
@@ -27,7 +26,6 @@ export const ResponsiveStockChart = ({data}:any)=>{
                 x: index,
                 //@ts-ignore
                 y: newPrice,
-                date: dateFns.format(new Date(key), 'MMM-dd'),
 
             }
             // console.log(newObj)

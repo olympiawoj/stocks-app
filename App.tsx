@@ -8,6 +8,9 @@ import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBar
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
 import {SwipeableModal} from './components/Modal/Modal'
+//@ts-ignore
+import { API_KEY } from "react-native-dotenv";
+
 
 interface filteredOptions {
   symbol: string;
@@ -22,6 +25,7 @@ interface filteredOptions {
   price?: string;
   filteredOptions?: object;
   companyOverview?: object;
+  length: number;
 }
 
 interface StockObjInfo {
@@ -37,17 +41,17 @@ interface StockObjInfo {
     price: string;
 }
 
+interface BestMatchesInfo {
+  matchScore: string;
+  region: string;
+}
 
-
-// @ts-ignore
-import { API_KEY } from "react-native-dotenv";
 
 export default function App() {
   const [value, setValue] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  //@ts-ignore
-  const [stockObjInfo, setStockObjInfo] = useState({})
-  const [prices, setPrices] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState<filteredOptions | []>([]);
+  const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({})
+  const [prices, setPrices] = useState<number[] | []>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
@@ -58,8 +62,7 @@ export default function App() {
       if (response.data) {
         const bestMatchesArr = response.data["bestMatches"];
         renameKeysArr(bestMatchesArr);
-        //@ts-ignore
-        let filteredMatchesArr = bestMatchesArr.filter((obj) => parseFloat(obj.matchScore, 10) > 0.2 && obj.region === "United States"
+        let filteredMatchesArr = bestMatchesArr.filter((obj:BestMatchesInfo) => parseFloat(obj.matchScore) > 0.2 && obj.region === "United States"
         );
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
@@ -162,7 +165,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black,
-    // justifyContent: "center",
     paddingTop: 100,
     padding: 15,
   },
