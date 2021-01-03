@@ -5,34 +5,40 @@ import * as dateFns from 'date-fns'
 interface MyObject {
     x: string;
     y: string;
+    date: string;
 }
 
 export const ResponsiveStockChart = ({data}:any)=>{
     const [stockData, setStockData] = useState<any[]>([])
-    console.log('ResponsiveStockChart', stockData)
+    console.log('ResponsiveStockChart', data)
     useEffect(()=>{
         const stockDataArr:MyObject[] = []
-        let i = 0
-        for (let [index, [key, value]] of Object.entries(Object.entries(data))) {
-            // console.log(key)
-            // console.log(value)
-            // console.log(index)
+        let i = Object.entries(data).length
+        for (let [key, value] of Object.entries(data)) {
+            console.log(key)
+            console.log(value)
 
             //@ts-ignore
-            let newPrice = parseInt(value["close"]).toFixed(2) 
+            let newPrice = parseInt(value["adjusted close"], 10).toFixed(2) 
             // console.log(newPrice)
-            const newObj  = {
+            const newObj:MyObject  = {
                 // x: dateFns.format(new Date(key), 'MMM-dd'),
-                x: index,
-                //@ts-ignore
+                x: i.toString(),
                 y: newPrice,
+                date: dateFns.format(new Date(key), 'MMM-dd')
 
             }
             // console.log(newObj)
+            i--
             newObj.y && stockDataArr.unshift(newObj)
+            //unshift adds newObj to the BEGINNING of stockDataArr
+            //Adds Aug-10 to the beginning
+            // PUSH adds to the END of the stockDataArr, e.g. 
           }
+          console.log('stockDataArr')
+          console.log(stockDataArr)
           //@ts-ignore
-         setStockData(stockDataArr.slice(70, 100))
+         setStockData(stockDataArr)
          return ()=>{
              setStockData([])
          }
@@ -45,7 +51,7 @@ export const ResponsiveStockChart = ({data}:any)=>{
     return (
  
         <>
-        {stockData && (
+        {stockData.length>0 && (
                  <Chart
                  style={{ height: 200, width: '100%' }}
                  // data={[
@@ -65,16 +71,16 @@ export const ResponsiveStockChart = ({data}:any)=>{
                  // ]}
                  data={stockData}
                  padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-                 xDomain={{ min: 0, max: 30 }}
+                 xDomain={{ min: 0, max: 100 }}
                  yDomain={{ min: 0, max: 150 }}
                >
                  <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) } }} />
                  
-                 <HorizontalAxis tickCount={5} theme={{ labels: { formatter: (v) => v.toFixed(0) } }}/>
+                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0) } }}/>
                  <Area theme={{ gradient: { from: { color: '#44bd32' }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
                    tooltipComponent={<Tooltip />}
-                   theme={{ stroke: { color: '#44bd32', width: 5 }, scatter: { default: { width: 8, height: 8, rx: 4, color: '#44ad32' }, selected: { color: 'red' } } }}
+                   theme={{ stroke: { color: '#44bd32', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 4, color: '#44ad32' }, selected: { color: 'white' } } }}
                  />
                </Chart>
         )}

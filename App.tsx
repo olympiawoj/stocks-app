@@ -154,7 +154,7 @@ export default function App() {
         />
       )}
       </View>
-      <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>
+    { (Object.keys(stockObjInfo).length > 0) &&  <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>}
     </View>
     </PaperProvider>
   );
