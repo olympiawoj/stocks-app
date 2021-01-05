@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight } from "react-native";
 import { colors } from "../../utils/colors";
 import { Divider } from 'react-native-paper';
+import { Dispatch, SetStateAction } from "react";
 
 interface filteredOptions {
   symbol: string;
@@ -16,8 +17,14 @@ interface filteredOptions {
   price?: string;
 }
 
-//@ts-ignore
-export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }) => {
+interface AutoCompleteSearchBarResultsProps {
+  filteredOptions: filteredOptions[];
+  prices: number[];
+  setModalVisible:  Dispatch<SetStateAction<boolean>>;
+  setStockObjInfo: Dispatch<SetStateAction<boolean>>;
+}
+
+export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }:AutoCompleteSearchBarResultsProps) => {
   //@ts-ignore
   const onRowPress = (e, item) => {
     setModalVisible(true)

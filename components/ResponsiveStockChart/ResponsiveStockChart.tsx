@@ -74,9 +74,9 @@ export const ResponsiveStockChart = ({data}:any)=>{
                  data={stockData}
                  padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
                  xDomain={{ min: 0, max: 100 }}
-                 yDomain={{ min: 0, max: 150 }}
+                 yDomain={{ min: 100, max: 140 }}
                >
-                 <VerticalAxis tickCount={10} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
+                 <VerticalAxis tickCount={5} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
                  
                  <HorizontalAxis tickCount={10} theme={{ labels: { formatter:  (v) => v.toFixed(0), label: {color: colors.manatee}}, ticks: {visible: false}  }}/>
                  <Area theme={{ gradient: { from: { color: colors.emerald }, to: { color: '#44bd32', opacity: 0.2 } } }} />

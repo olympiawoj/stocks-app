@@ -48,7 +48,7 @@ interface BestMatchesInfo {
 
 export default function App() {
   const [value, setValue] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState<filteredOptions | []>([]);
+  const [filteredOptions, setFilteredOptions] = useState<filteredOptions[] | []>([]);
   const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({})
   const [prices, setPrices] = useState<number[] | []>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
