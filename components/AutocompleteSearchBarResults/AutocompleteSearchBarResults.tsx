@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight } from "react-native";
+import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight, ListRenderItem } from "react-native";
 import { colors } from "../../utils/colors";
 import { Divider } from 'react-native-paper';
 import { Dispatch, SetStateAction } from "react";
 
-interface filteredOptions {
+interface filteredOption {
   symbol: string;
   name: string;
   type: string;
@@ -18,32 +18,24 @@ interface filteredOptions {
 }
 
 interface AutoCompleteSearchBarResultsProps {
-  filteredOptions: filteredOptions[];
+  filteredOptions: filteredOption[];
   prices: number[];
   setModalVisible:  Dispatch<SetStateAction<boolean>>;
-  setStockObjInfo: Dispatch<SetStateAction<boolean>>;
+  setStockObjInfo: Dispatch<SetStateAction<filteredOption>>;
 }
 
 export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }:AutoCompleteSearchBarResultsProps) => {
-  //@ts-ignore
-  const onRowPress = (e, item) => {
+  const onRowPress = (item:filteredOption) => {
     setModalVisible(true)
-    //@ts-ignore
-    // filteredOptions.forEach(option => {
-    //   console.log(option.symbol, option.name)
-    // })
-    console.log('on row press...')
-    // console.log(item)
     setStockObjInfo(item)
     
   }
 
-  //@ts-ignore
-  const renderItem = ({ item }) => {
+  const renderItem:ListRenderItem<filteredOption> = ({ item }) => {
     return (
 
       //@ts-ignore
-        <TouchableHighlight onPress={(e)=>onRowPress(e, item)}>
+        <TouchableHighlight onPress={()=>onRowPress(item)}>
         <View
           key={`${item.name} - ${Date.now()}`}
         >
