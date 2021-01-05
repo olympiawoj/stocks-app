@@ -135,7 +135,7 @@ export const SwipeableModal = ({
         </View>
         <Divider style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }} />
         {/* <StockChart data={stockDailyPxHistory}/> */}
-       { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory}/>}
+        { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory} stockObjInfo={stockObjInfo}/>}
       </View>
       
        {/* <XAxisScaleTimeExample/> */}

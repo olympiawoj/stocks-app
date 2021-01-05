@@ -9,11 +9,13 @@ interface MyObject {
     meta: string;
 }
 
-export const ResponsiveStockChart = ({data}:any)=>{
+export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
     const [stockData, setStockData] = useState<any[]>([])
+    const [dateMap, setDateMap] = useState<any>({})
     console.log('ResponsiveStockChart', data)
     useEffect(()=>{
         const stockDataArr:MyObject[] = []
+        const mapObj = {}
         let i = Object.entries(data).length
         for (let [key, value] of Object.entries(data)) {
             console.log(key)
@@ -27,27 +29,30 @@ export const ResponsiveStockChart = ({data}:any)=>{
                 x: i.toString(),
                 y: newPrice,
                 meta: dateFns.format(new Date(key), 'MMM-dd')
+            }  
+            //@ts-ignore
+            mapObj[i.toString()] = dateFns.format(new Date(key), 'MMM-dd')
 
-            }
+
             // console.log(newObj)
             i--
             newObj.y && stockDataArr.unshift(newObj)
+            // mapObj.i && mapObjArr.unshift(mapObj)
             //unshift adds newObj to the BEGINNING of stockDataArr
             //Adds Aug-10 to the beginning
             // PUSH adds to the END of the stockDataArr, e.g. 
           }
           console.log('stockDataArr')
           console.log(stockDataArr)
+          console.log("*****************************")
+          console.log(mapObj)
           //@ts-ignore
          setStockData(stockDataArr)
+         setDateMap(mapObj)
          return ()=>{
              setStockData([])
          }
     }, [data])
-
-    const formatLabel = (stockData:any) => {
-        console.log(stockData)
-    }
 
     return (
  
@@ -59,16 +64,6 @@ export const ResponsiveStockChart = ({data}:any)=>{
                  // data={[
                  //   { x: -2, y: 15 },
                  //   { x: -1, y: 10 },
-                 //   { x: 0, y: 12 },
-                 //   { x: 1, y: 7 },
-                 //   { x: 2, y: 6 },
-                 //   { x: 3, y: 3 },
-                 //   { x: 4, y: 5 },
-                 //   { x: 5, y: 8 },
-                 //   { x: 6, y: 12 },
-                 //   { x: 7, y: 14 },
-                 //   { x: 8, y: 12 },
-                 //   { x: 9, y: 13.5 },
                  //   { x: 10, y: 18 },
                  // ]}
                  data={stockData}
@@ -78,7 +73,7 @@ export const ResponsiveStockChart = ({data}:any)=>{
                >
                  <VerticalAxis tickCount={5} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
                  
-                 <HorizontalAxis tickCount={10} theme={{ labels: { formatter:  (v) => v.toFixed(0), label: {color: colors.manatee}}, ticks: {visible: false}  }}/>
+                 <HorizontalAxis tickCount={6} theme={{ labels: { formatter:  (v) => dateMap[v.toString()], label: {color: colors.manatee}}, ticks: {visible: false}  }}/>
                  <Area theme={{ gradient: { from: { color: colors.emerald }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
                    smoothing={"cubic-spline"}
