@@ -47,7 +47,7 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModal
                 }}
               >
                 <Text style={{ color: "white" }}>{item.symbol}</Text>
-                <Text style={{ color: "white" }}>{item.price}</Text>
+                <Text style={{ color: "white" }}>{item.price?.slice(0, -2)}</Text>
               </View>
               <View
                 style={{

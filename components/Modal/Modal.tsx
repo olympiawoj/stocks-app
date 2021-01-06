@@ -127,7 +127,7 @@ export const SwipeableModal = ({
           }}
         >
           <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>
-            {stockObjInfo.price}
+            {stockObjInfo.price?.slice(0, -2)}
           </Text>
           <Text style={{ color: colors.gunsmokeGrey, fontWeight: "800" }}>
             At Close

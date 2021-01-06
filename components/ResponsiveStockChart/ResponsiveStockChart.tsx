@@ -23,7 +23,7 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
             console.log(value)
 
             //@ts-ignore
-            let newPrice = parseInt(value["adjusted close"], 10).toFixed(2) 
+            let newPrice = parseFloat(value["adjusted close"]).toFixed(2) 
             // console.log(newPrice)
             const newObj:MyObject  = {
                 // x: dateFns.format(new Date(key), 'MMM-dd'),
@@ -80,7 +80,7 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
                  <Area theme={{ gradient: { from: { color: colors.emerald }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
                    smoothing={"cubic-spline"}
-                   tooltipComponent={<Tooltip theme={{formatter: (v) => v.y.toString()+' ('+v.meta.toString()+")"}}/>}
+                   tooltipComponent={<Tooltip theme={{shape:{width: 100, color: 'transparent'}, formatter: (v) => v.y.toString()+' ('+v.meta.toString()+")"}}/>}
                    theme={{ stroke: { color: colors.emerald, width: 5 }, scatter: {  selected: { width: 4, height: 4, rx: 4,color: 'white' } } }}
                  />
                </Chart>
