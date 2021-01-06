@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {Text} from 'react-native'
 import {Chart, VerticalAxis, HorizontalAxis, Area, Line, Tooltip} from 'react-native-responsive-linechart'
 import * as dateFns from 'date-fns'
 import { colors } from '../../utils/colors'
@@ -58,7 +59,9 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
  
         <>
         {stockData.length>0 && (
-                
+            <>
+                <Text>{}</Text>
+
                  <Chart
                  style={{ height: 200, width: '100%' }}
                  // data={[
@@ -77,10 +80,11 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
                  <Area theme={{ gradient: { from: { color: colors.emerald }, to: { color: '#44bd32', opacity: 0.2 } } }} />
                  <Line
                    smoothing={"cubic-spline"}
-                   tooltipComponent={<Tooltip />}
+                   tooltipComponent={<Tooltip theme={{formatter: (v) => v.y.toString()+' ('+v.meta.toString()+")"}}/>}
                    theme={{ stroke: { color: colors.emerald, width: 5 }, scatter: {  selected: { width: 4, height: 4, rx: 4,color: 'white' } } }}
                  />
                </Chart>
+               </>
         )}
         </>
     )
