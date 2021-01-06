@@ -60,8 +60,6 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
         <>
         {stockData.length>0 && (
             <>
-                <Text>{}</Text>
-
                  <Chart
                  style={{ height: 200, width: '100%' }}
                  // data={[

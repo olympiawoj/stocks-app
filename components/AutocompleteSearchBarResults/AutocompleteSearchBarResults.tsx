@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, FlatList, SafeAreaView, TouchableHighlight, ListRenderItem } from "react-native";
+import React from "react";
+import { View, Text, FlatList, SafeAreaView, TouchableHighlight, ListRenderItem } from "react-native";
 import { colors } from "../../utils/colors";
 import { Divider } from 'react-native-paper';
 import { Dispatch, SetStateAction } from "react";
@@ -33,8 +33,6 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModal
 
   const renderItem:ListRenderItem<filteredOption> = ({ item }) => {
     return (
-
-      //@ts-ignore
         <TouchableHighlight onPress={()=>onRowPress(item)}>
         <View
           key={`${item.name} - ${Date.now()}`}
@@ -57,11 +55,6 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModal
                 }}
               >
                 <Text style={{ color: colors.gunsmokeGrey, marginBottom: 10 }}>{item.name}</Text>
-                {/* <Text style={{ color: colors.gunsmokeGrey }}>
-                  {(Number(
-                    item.companyOverview["MarketCapitalization"]) / 1000000000000)
-                  .toFixed(2) + "T" || ''}
-                </Text> */}
               </View>
               <Divider style={{backgroundColor:colors.codGrey}}/>
         </View>
