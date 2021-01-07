@@ -3,17 +3,12 @@ import {useEffect, useState} from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../utils/colors";
 import axios from "axios";
-// @ts-ignore
 import Modal from "react-native-modal";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
 import {  renameKeysObj } from "../../utils/renameKeys";
-import {StockChart} from '../StockChart/StockChart'
 import {ResponsiveStockChart} from '../ResponsiveStockChart/ResponsiveStockChart'
-import {XAxisScaleTimeExample} from '../TestChart'
-
-// @ts-ignore
 import { API_KEY } from "react-native-dotenv";
 
 interface SwipeableModal {
@@ -45,8 +40,7 @@ export const SwipeableModal = ({
   
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
 
-    
-    //@ts-ignore
+
     useEffect( ()=>{
         const fetchDailyAdjustedData = async () =>{
             try{
@@ -62,21 +56,7 @@ export const SwipeableModal = ({
                     // console.log(value)
                     value = renameKeysObj(value)
                   }
-                //   console.log(timeSeries)
-
-                //   for(let [key, value] of Object.entries(timeSeries)){
-                //       //@ts-ignore
-                //       for(let [key, val] of Object.entries(value)){
-                //         //   console.log(key, val)
-                //           if(key == 'close'){
-                //             //   console.log(val)
-                //               //@ts-ignore
-                //             setStockDailyPxHistory(stockDailyPxHistory => [...stockDailyPxHistory, parseFloat(val, 10)])
-                //           }
-                //       }
-                //   }
                 setStockDailyPxHistory(timeSeries)
-                  
                 // console.log(stockDailyPxHistory)
 
             }catch(error){
@@ -137,8 +117,6 @@ export const SwipeableModal = ({
         {/* <StockChart data={stockDailyPxHistory}/> */}
         { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory} stockObjInfo={stockObjInfo}/>}
       </View>
-      
-       {/* <XAxisScaleTimeExample/> */}
     </Modal>
   );
 };
@@ -146,8 +124,6 @@ export const SwipeableModal = ({
 const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.codGrey,
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
     borderRadius: 20,
     borderColor: "rgba(0, 0, 0, 0.1)",
     width: "100%",
