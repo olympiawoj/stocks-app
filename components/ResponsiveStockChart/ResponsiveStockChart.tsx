@@ -10,19 +10,41 @@ interface MyObject {
     meta: string;
 }
 
-export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
+interface StockObjInfo {
+  currency?: string;
+  marketClose?: string;
+  marketOpen?: string;
+  marketScore?: string;
+  name?: string;
+  region?: string;
+  symbol?: string;
+  timezone?: string;
+  type?: string;
+  price?: string;
+  [propName: string]: any; // string index signature - allwos us to have extra properties
+}
+ 
+interface ResponsiveStockChartProps {
+    data: StockObjInfo[],
+    stockObjInfo: StockObjInfo
+}
+
+interface MapObj {
+    [i: string]: string;
+}
+
+export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartProps)=>{
     const [stockData, setStockData] = useState<any[]>([])
     const [dateMap, setDateMap] = useState<any>({})
     console.log('ResponsiveStockChart', data)
     useEffect(()=>{
         const stockDataArr:MyObject[] = []
-        const mapObj = {}
+        const mapObj:MapObj = {}
         let i = Object.entries(data).length
         for (let [key, value] of Object.entries(data)) {
             console.log(key)
             console.log(value)
 
-            //@ts-ignore
             let newPrice = parseFloat(value["adjusted close"]).toFixed(2) 
             // console.log(newPrice)
             const newObj:MyObject  = {
@@ -31,7 +53,7 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
                 y: newPrice,
                 meta: dateFns.format(new Date(key), 'MMM-dd')
             }  
-            //@ts-ignore
+
             mapObj[i.toString()] = dateFns.format(new Date(key), 'MMM-dd')
 
 
@@ -47,7 +69,6 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:any)=>{
           console.log(stockDataArr)
           console.log("*****************************")
           console.log(mapObj)
-          //@ts-ignore
          setStockData(stockDataArr)
          setDateMap(mapObj)
          return ()=>{
