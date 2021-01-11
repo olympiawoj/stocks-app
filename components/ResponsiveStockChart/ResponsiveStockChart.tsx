@@ -36,10 +36,16 @@ interface MapObj {
 export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartProps)=>{
     const [stockData, setStockData] = useState<any[]>([])
     const [dateMap, setDateMap] = useState<any>({})
-    console.log('ResponsiveStockChart', data)
+    const [max, setMax] = useState('')
+    const [min, setMin] = useState('')
+
+    // console.log('ResponsiveStockChart', data)
+
     useEffect(()=>{
         const stockDataArr:MyObject[] = []
-        const mapObj:MapObj = {}
+        const dateMapObj:MapObj = {}
+        let maxPx;
+        let minPx;
         let i = Object.entries(data).length
         for (let [key, value] of Object.entries(data)) {
             console.log(key)
@@ -54,10 +60,20 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartPr
                 meta: dateFns.format(new Date(key), 'MMM-dd')
             }  
 
-            mapObj[i.toString()] = dateFns.format(new Date(key), 'MMM-dd')
+            dateMapObj[i.toString()] = dateFns.format(new Date(key), 'MMM-dd')
 
-
-            // console.log(newObj)
+            // Is there a max or min?
+            if(!maxPx || !minPx){
+                maxPx = newPrice
+                minPx = newPrice
+            }
+            if(minPx && minPx > newPrice){
+                minPx = newPrice
+            }
+            if(maxPx && maxPx < newPrice){
+                maxPx = newPrice
+            }
+   
             i--
             newObj.y && stockDataArr.unshift(newObj)
             // mapObj.i && mapObjArr.unshift(mapObj)
@@ -65,12 +81,13 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartPr
             //Adds Aug-10 to the beginning
             // PUSH adds to the END of the stockDataArr, e.g. 
           }
-          console.log('stockDataArr')
-          console.log(stockDataArr)
-          console.log("*****************************")
-          console.log(mapObj)
+
+          console.log(`maxPx: ${maxPx}, minPx:${minPx}`)
+          maxPx && setMax(maxPx )
+          minPx && setMin(minPx)
+
          setStockData(stockDataArr)
-         setDateMap(mapObj)
+         setDateMap(dateMapObj)
          return ()=>{
              setStockData([])
          }
@@ -90,8 +107,8 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartPr
                  // ]}
                  data={stockData}
                  padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-                 xDomain={{ min: 0, max: 100 }}
-                 yDomain={{ min: 100, max: 140 }}
+                 xDomain={{ min: 0, max: 100}}
+                 yDomain={{ min: 100, max: parseFloat(max) + 5}}
                >
                  <VerticalAxis tickCount={5} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
                  

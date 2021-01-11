@@ -103,7 +103,7 @@ export default function App() {
     const quoteURL = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${API_KEY}`;
     try {
       const response = await axios.get(quoteURL);
-      console.log(response.data);
+      // console.log(response.data);
       // const searchObj = response.data["Global Quote"]
       // renameKeysObj(searchObj)
       return response.data;
