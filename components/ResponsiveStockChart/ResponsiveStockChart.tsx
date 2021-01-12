@@ -108,7 +108,7 @@ export const ResponsiveStockChart = ({data, stockObjInfo}:ResponsiveStockChartPr
                  data={stockData}
                  padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
                  xDomain={{ min: 0, max: 100}}
-                 yDomain={{ min: 100, max: parseFloat(max) + 5}}
+                 yDomain={{ min: Math.floor(parseFloat(min) - 5), max: Math.ceil(parseFloat(max) + 5)}}
                >
                  <VerticalAxis tickCount={5} theme={{ labels: { formatter: (v) => v.toFixed(0), label: {color: colors.manatee} }, ticks: {visible: false} }} />
                  
