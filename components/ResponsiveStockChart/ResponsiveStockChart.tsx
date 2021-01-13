@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {Text} from 'react-native'
+import React, { useEffect, useState, useRef } from "react";
+import {GestureResponderEvent, Text} from 'react-native'
 import {
   Chart,
   VerticalAxis,
@@ -11,6 +11,8 @@ import {
 import * as dateFns from "date-fns";
 import { colors } from "../../utils/colors";
 import { DataTable } from "react-native-paper";
+import { GestureDirection } from "@react-navigation/stack/lib/typescript/src/types";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 interface MyObject {
   x: string;
@@ -51,6 +53,8 @@ export const ResponsiveStockChart = ({
   const [min, setMin] = useState("");
 
   const [timePeriod, setTimePeriod] = useState();
+
+
   // 252 trading days
   // 1 week = 5 days
   // 1 month = 21
@@ -113,17 +117,32 @@ export const ResponsiveStockChart = ({
     };
   }, [data]);
 
+
+
+  interface CustomCellProps {
+      text: string
+  }
+  const CustomCell = ({text}:CustomCellProps)=>{
+    
+    const onTextPress = () =>{
+        console.log(text)
+      }
+
+    return (
+    <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}} onPress={onTextPress}>{text}</Text></DataTable.Cell>
+    )
+  }
+
   return (
     <>
       {stockData.length > 0 && (
         <>
           <DataTable.Row style={{marginRight: 15}}>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>1W</Text></DataTable.Cell>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>1M</Text></DataTable.Cell>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>3M</Text></DataTable.Cell>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>6M</Text></DataTable.Cell>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>1Y</Text></DataTable.Cell>
-            <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}}>2Y</Text></DataTable.Cell>
+            <CustomCell text="1W"/>
+            <CustomCell text="1M"/>
+            <CustomCell text="3M"/>
+            <CustomCell text="1Y"/>
+            <CustomCell text="2Y"/>
           </DataTable.Row>
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}
