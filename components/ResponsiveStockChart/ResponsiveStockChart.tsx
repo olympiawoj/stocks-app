@@ -42,6 +42,24 @@ interface ResponsiveStockChartProps {
 interface MapObj {
   [i: string]: string;
 }
+interface timeToDaysMap {
+    [index: string]: number;
+}
+const timeToDaysMap:timeToDaysMap = {
+    // 252 trading days
+    // 1 week = 5 days
+    // 1 month = 21
+    // 3 months = 63
+    // 6 months = 126
+    // 1 year = 252
+    // 2 years = 504
+    ['1W']: 5,
+    ['1M']: 21,
+    ['3M']: 63,
+    ['6M']: 126,
+    ['1Y']: 252,
+    ['2Y']: 504,
+}
 
 export const ResponsiveStockChart = ({
   data,
@@ -51,18 +69,7 @@ export const ResponsiveStockChart = ({
   const [dateMap, setDateMap] = useState<any>({});
   const [max, setMax] = useState("");
   const [min, setMin] = useState("");
-
-  const [timePeriod, setTimePeriod] = useState();
-
-
-  // 252 trading days
-  // 1 week = 5 days
-  // 1 month = 21
-  // 3 months = 63
-  // 6 months = 126
-  // 1 year = 252
-  // 2 years = 504
-
+  const [timePeriod, setTimePeriod] = useState("1M")
   // console.log('ResponsiveStockChart', data)
 
   useEffect(() => {
@@ -106,16 +113,18 @@ export const ResponsiveStockChart = ({
       // PUSH adds to the END of the stockDataArr, e.g.
     }
 
-    console.log(`maxPx: ${maxPx}, minPx:${minPx}`);
+    // console.log(`maxPx: ${maxPx}, minPx:${minPx}`);
     maxPx && setMax(maxPx);
     minPx && setMin(minPx);
-
-    setStockData(stockDataArr);
+    //https://stackoverflow.com/questions/57086672/element-implicitly-has-an-any-type-because-expression-of-type-string-cant-b
+    setStockData(stockDataArr.slice(0, timeToDaysMap[timePeriod]));
     setDateMap(dateMapObj);
+    console.log('************************')
+    console.log(stockDataArr, dateMapObj)
     return () => {
       setStockData([]);
     };
-  }, [data]);
+  }, [data, timePeriod]);
 
 
 
@@ -126,6 +135,7 @@ export const ResponsiveStockChart = ({
     
     const onTextPress = () =>{
         console.log(text)
+        setTimePeriod(text)
       }
 
     return (

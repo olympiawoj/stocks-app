@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, FlatList, SafeAreaView, TouchableHighlight, ListRenderItem } from "react-native";
 import { colors } from "../../utils/colors";
 import { Divider } from 'react-native-paper';
@@ -25,10 +25,11 @@ interface AutoCompleteSearchBarResultsProps {
 }
 
 export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }:AutoCompleteSearchBarResultsProps) => {
+
+
   const onRowPress = (item:filteredOption) => {
     setModalVisible(true)
     setStockObjInfo(item)
-    
   }
 
   const renderItem:ListRenderItem<filteredOption> = ({ item }) => {

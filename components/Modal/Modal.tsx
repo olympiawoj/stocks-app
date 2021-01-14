@@ -37,7 +37,7 @@ export const SwipeableModal = ({
   stockObjInfo,
 }: SwipeableModal) => {
     const [stockDailyPxHistory, setStockDailyPxHistory] = useState([])
-  
+
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
 
 
