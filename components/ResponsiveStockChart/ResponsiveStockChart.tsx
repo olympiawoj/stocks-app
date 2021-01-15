@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {GestureResponderEvent, Text} from 'react-native'
+import {GestureResponderEvent, Text, FlatList, View} from 'react-native'
 import {
   Chart,
   VerticalAxis,
@@ -42,6 +42,7 @@ interface ResponsiveStockChartProps {
 interface MapObj {
   [i: string]: string;
 }
+//https://www.typescriptlang.org/docs/handbook/interfaces.html
 interface timeToDaysMap {
     [index: string]: number;
 }
@@ -73,6 +74,7 @@ export const ResponsiveStockChart = ({
   // console.log('ResponsiveStockChart', data)
 
   useEffect(() => {
+    console.log('use effect running.....')
     const stockDataArr: MyObject[] = [];
     const dateMapObj: MapObj = {};
     let maxPx;
@@ -128,32 +130,60 @@ export const ResponsiveStockChart = ({
 
 
 
-  interface CustomCellProps {
-      text: string
+  // interface CustomCellProps {
+  //     text: string
+  // }
+  // const CustomCell = ({text}:CustomCellProps)=>{
+  //   const selectItem = (text:string) =>{
+        
+  //   }
+  //   const onTextPress = () =>{
+  //       console.log(text)
+  //       selectItem(text)
+  //       setTimePeriod(text)
+  //     }
+
+  //   return (
+  //   <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}} onPress={onTextPress}>{text}</Text></DataTable.Cell>
+  //   )
+  // }
+
+  interface RenderItemProps{
+    item: string;
   }
-  const CustomCell = ({text}:CustomCellProps)=>{
-    
+  const renderItem = ({item}:RenderItemProps)=>{
     const onTextPress = () =>{
-        console.log(text)
-        setTimePeriod(text)
-      }
+      console.log(item)
+      setTimePeriod(item)
+      console.log(item)
+    }
 
     return (
-    <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}} onPress={onTextPress}>{text}</Text></DataTable.Cell>
+      <View style={{backgroundColor: item === timePeriod ? colors.searchBackground : colors.codGrey, height: 30, width: 50, justifyContent: 'center', display: 'flex', alignContent: 'center', borderRadius: 5, paddingLeft: 12, marginLeft: 5
+      }}>
+      <Text style={{color: 'white', fontWeight: 'bold', paddingRight: 20}} onPress={onTextPress}>{item}</Text>
+      </View>
     )
   }
+
+
 
   return (
     <>
       {stockData.length > 0 && (
         <>
-          <DataTable.Row style={{marginRight: 15}}>
+          {/* <DataTable.Row style={{marginRight: 15}}>
             <CustomCell text="1W"/>
             <CustomCell text="1M"/>
             <CustomCell text="3M"/>
+            <CustomCell text="6M"/>
             <CustomCell text="1Y"/>
             <CustomCell text="2Y"/>
-          </DataTable.Row>
+          </DataTable.Row> */}
+          <FlatList 
+          
+          horizontal data={["1W", "1M", "3M", "6M", "1Y", "2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
+          />
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}
             // data={[
@@ -163,7 +193,7 @@ export const ResponsiveStockChart = ({
             // ]}
             data={stockData}
             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-            xDomain={{ min: 0, max: 100 }}
+            xDomain={{ min: 0, max: stockData.length }}
             yDomain={{
               min: Math.floor(parseFloat(min) - 5),
               max: Math.ceil(parseFloat(max) + 5),
