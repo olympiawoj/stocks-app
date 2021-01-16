@@ -35,7 +35,7 @@ interface StockObjInfo {
 }
 
 interface ResponsiveStockChartProps {
-  data: StockObjInfo[];
+  data: StockObjInfo;
   stockObjInfo: StockObjInfo;
   setTimePeriod: any;
   timePeriod: string;
@@ -97,7 +97,7 @@ export const ResponsiveStockChart = ({
         // x: dateFns.format(new Date(key), 'MMM-dd'),
         x: i.toString(),
         y: newPrice,
-        meta: dateFns.format(new Date(key), "MMM-dd"),
+        meta: dateFns.format(new Date(key), "MMM-yy"),
       };
 
       dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
@@ -189,7 +189,7 @@ export const ResponsiveStockChart = ({
           </DataTable.Row> */}
           <FlatList 
           
-          horizontal data={["1D", "1W", "1M", "3M", "6M", "1Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
+          horizontal data={["1D", "1W", "1M", "3M", "6M", "1Y","2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
           />
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}

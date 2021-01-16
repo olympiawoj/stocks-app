@@ -36,9 +36,10 @@ export const SwipeableModal = ({
   handleModalClose,
   stockObjInfo,
 }: SwipeableModal) => {
-    const [stockDailyPxHistory, setStockDailyPxHistory] = useState([])
-    const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState([])
+    const [stockDailyPxHistory, setStockDailyPxHistory] = useState({})
+    const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState({})
     const [timePeriod, setTimePeriod] = useState("1M")
+    const [isLoading, setIsLoading] = useState(false)
 
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
     const intradayTimeSeriesURL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockObjInfo.symbol}&interval=5min&outputsize=full&apikey=${API_KEY}`
@@ -59,7 +60,8 @@ export const SwipeableModal = ({
                     value = renameKeysObj(value)
                   }
                 setStockDailyPxHistory(timeSeries)
-                // console.log(stockDailyPxHistory)
+                console.log('stockdailypxhistory')
+                console.log('stockdailypxhistory', stockDailyPxHistory)
 
             }catch(error){
                 console.log(error)
@@ -84,7 +86,7 @@ export const SwipeableModal = ({
         }
 
         fetchDailyAdjustedData()
-        fetchIntradayAdjusted()
+        // fetchIntradayAdjusted()
         return ()=>{
             setStockDailyPxHistory([])
             setStockIntradayPxHistory([])
