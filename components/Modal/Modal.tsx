@@ -37,9 +37,11 @@ export const SwipeableModal = ({
   stockObjInfo,
 }: SwipeableModal) => {
     const [stockDailyPxHistory, setStockDailyPxHistory] = useState([])
+    const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState([])
+    const [timePeriod, setTimePeriod] = useState("1M")
 
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
-
+    const intradayTimeSeriesURL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockObjInfo.symbol}&interval=5min&outputsize=full&apikey=${API_KEY}`
 
     useEffect( ()=>{
         const fetchDailyAdjustedData = async () =>{
@@ -63,9 +65,29 @@ export const SwipeableModal = ({
                 console.log(error)
             }
         }
+        const fetchIntradayAdjusted = async()=>{
+          try{
+            const response = await axios.get(intradayTimeSeriesURL);
+            let timeSeries = response.data["Time Series (5min)"]
+            for (let [key, value] of Object.entries(timeSeries)) {
+              console.log('key', key)
+              // console.log(value)
+              value = renameKeysObj(value)
+              console.log(value)
+            }
+            setStockIntradayPxHistory(timeSeries)
+            console.log(stockIntradayPxHistory)
+
+          }catch(error){
+            console.log(error)
+          }
+        }
+
         fetchDailyAdjustedData()
+        fetchIntradayAdjusted()
         return ()=>{
             setStockDailyPxHistory([])
+            setStockIntradayPxHistory([])
         }
 
     }, [stockObjInfo])
@@ -115,7 +137,7 @@ export const SwipeableModal = ({
         </View>
         <Divider style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }} />
         {/* <StockChart data={stockDailyPxHistory}/> */}
-        { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory} stockObjInfo={stockObjInfo}/>}
+        { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod}/>}
       </View>
     </Modal>
   );

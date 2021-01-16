@@ -37,6 +37,8 @@ interface StockObjInfo {
 interface ResponsiveStockChartProps {
   data: StockObjInfo[];
   stockObjInfo: StockObjInfo;
+  setTimePeriod: any;
+  timePeriod: string;
 }
 
 interface MapObj {
@@ -54,6 +56,7 @@ const timeToDaysMap:timeToDaysMap = {
     // 6 months = 126
     // 1 year = 252
     // 2 years = 504
+    ['1D']: 1,
     ['1W']: 5,
     ['1M']: 21,
     ['3M']: 63,
@@ -65,13 +68,17 @@ const timeToDaysMap:timeToDaysMap = {
 export const ResponsiveStockChart = ({
   data,
   stockObjInfo,
+  setTimePeriod,
+  timePeriod
 }: ResponsiveStockChartProps) => {
   const [stockData, setStockData] = useState<any[]>([]);
   const [dateMap, setDateMap] = useState<any>({});
   const [max, setMax] = useState("");
   const [min, setMin] = useState("");
-  const [timePeriod, setTimePeriod] = useState("1M")
+  // const [timePeriod, setTimePeriod] = useState("1M")
   // console.log('ResponsiveStockChart', data)
+
+  
 
   useEffect(() => {
     console.log('use effect running.....')
@@ -81,8 +88,8 @@ export const ResponsiveStockChart = ({
     let minPx;
     let i = Object.entries(data).length;
     for (let [key, value] of Object.entries(data)) {
-      console.log(key);
-      console.log(value);
+      // console.log(key);
+      // console.log(value);
 
       let newPrice = parseFloat(value["adjusted close"]).toFixed(2);
       // console.log(newPrice)
@@ -182,7 +189,7 @@ export const ResponsiveStockChart = ({
           </DataTable.Row> */}
           <FlatList 
           
-          horizontal data={["1W", "1M", "3M", "6M", "1Y", "2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
+          horizontal data={["1D", "1W", "1M", "3M", "6M", "1Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
           />
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}
@@ -193,10 +200,10 @@ export const ResponsiveStockChart = ({
             // ]}
             data={stockData}
             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-            xDomain={{ min: 0, max: stockData.length }}
+            xDomain={{ min: 1, max: stockData.length }}
             yDomain={{
-              min: Math.floor(parseFloat(min) - 5),
-              max: Math.ceil(parseFloat(max) + 5),
+              min: Math.floor(parseFloat(min) - 2),
+              max: Math.ceil(parseFloat(max) + 2),
             }}
           >
             <VerticalAxis

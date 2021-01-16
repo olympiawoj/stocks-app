@@ -41,9 +41,11 @@ export const renameKeysObj= (quoteDataObj:any):void => {
 
   for (let key in quoteDataObj) {
     const newKey = key.replace(/^\d+\.\s/, "");
+    console.log(`newKey: ${newKey}`)
     quoteDataObj[newKey] = quoteDataObj[key];
     delete quoteDataObj[key];
   }
+  console.log(quoteDataObj)
   
   };
   
