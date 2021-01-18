@@ -17,36 +17,37 @@ interface StockObjInfo {
   }
 
   
-export const StockInfoTable = ({stockObjInfo}:StockObjInfo) => {
+export const StockInfoTable = ({stockObjInfo, latestData}:StockObjInfo) => {
     console.log(stockObjInfo)
+    console.log('latestData', latestData)
   return (
     <View style={styles.mainContainer}>
       <View style={{ display: "flex", marginLeft: 37, marginTop: 10 }}>
         <View style={styles.textContainer}>
           <Text style={styles.textLabel}>Open</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>{latestData.open}</Text>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.textLabel}>High</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>{latestData.high}</Text>
         </View>
         <View style={styles.textContainer}>
           <Text  style={styles.textLabel}>Low</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>{latestData.low}</Text>
         </View>
       </View>
       <View style={{ display: "flex", marginTop: 10 }}>
         <View style={styles.textContainer}>
           <Text style={styles.textLabel}>Vol</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>{latestData.volume}</Text>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.textLabel}>P/E</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>13</Text>
         </View>
         <View style={styles.textContainer}>
           <Text  style={{...styles.textLabel, paddingRight: 10}}>Mkt Cap.</Text>
-          <Text style={styles.text}>131.32</Text>
+          <Text style={styles.text}>$2.7 Trn</Text>
         </View>
       </View>
     </View>

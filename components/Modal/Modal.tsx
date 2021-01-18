@@ -38,6 +38,7 @@ interface MyObject {
   x: string;
   y: string;
   meta: string;
+  [i: string]: string;
 }
 interface MapObj {
   [i: string]: string;
@@ -88,6 +89,13 @@ export const SwipeableModal = ({
                       x: i.toString(),
                       y: newPrice,
                       meta: dateFns.format(new Date(key), "MMM-dd"),
+                      open: value['1. open'],
+                      close: value['4. close'],
+                      high: value['2. high'],
+                      low: value['3. low'],
+                      volume: value['6. volume'],
+
+
                     }; 
                     dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
 
@@ -199,7 +207,7 @@ export const SwipeableModal = ({
         {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>Loading...</Text>}
         {!isLoading && stockData.length > 0 && <ResponsiveStockChart stockData={stockData} dateMap={dateMap} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod} min={min} max={max}/>}
-        {!isLoading && stockData.length > 0 && <StockInfoTable stockObjInfo={stockObjInfo}/>}
+        {!isLoading && stockData.length > 0 && <StockInfoTable stockObjInfo={stockObjInfo} latestData={stockData[stockData.length-1]}/>}
       </View>
     </Modal>
   );

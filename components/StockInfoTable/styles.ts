@@ -5,14 +5,16 @@ export const styles = StyleSheet.create({
   mainContainer: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "flex-start",
+    width: '100%'
   },
   textContainer: {
     display: "flex",
     flexDirection: "row",
-    width: "50%",
+    // width: "42%",
     height: 25,
-    backgroundColor: 'blue'
+    // backgroundColor: 'blue'
+    justifyContent: 'space-between',
+    marginRight: 55
   },
   text: {
     color: "white",
@@ -24,7 +26,7 @@ export const styles = StyleSheet.create({
     color: colors.gunsmokeGrey,
     fontWeight: "bold",
     fontSize: 12,
-    marginRight: 50,
-    backgroundColor: 'pink'
+    paddingRight: 25,
+    // backgroundColor: 'pink'
   }
 });
