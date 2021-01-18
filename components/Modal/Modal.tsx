@@ -10,6 +10,7 @@ import { Divider } from "react-native-paper";
 import {  renameKeysObj } from "../../utils/renameKeys";
 import {ResponsiveStockChart} from '../ResponsiveStockChart/ResponsiveStockChart'
 import { API_KEY } from "react-native-dotenv";
+import * as dateFns from "date-fns";
 
 interface SwipeableModal {
   isModalVisible: boolean;
@@ -29,6 +30,16 @@ interface StockObjInfo {
   timezone?: string;
   type?: string;
   price?: string;
+  [propName: string]: any; // string index signature - allwos us to have extra properties
+}
+
+interface MyObject {
+  x: string;
+  y: string;
+  meta: string;
+}
+interface MapObj {
+  [i: string]: string;
 }
 
 export const SwipeableModal = ({
@@ -36,63 +47,108 @@ export const SwipeableModal = ({
   handleModalClose,
   stockObjInfo,
 }: SwipeableModal) => {
-    const [stockDailyPxHistory, setStockDailyPxHistory] = useState({})
+    const [stockData, setStockData] = useState<any[]>([]);
     const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState({})
     const [timePeriod, setTimePeriod] = useState("1M")
-    const [isLoading, setIsLoading] = useState(false)
-
+    const [isLoading, setIsLoading] = useState(true)
+    const [dateMap, setDateMap] = useState<any>({});
+    const [max, setMax] = useState("");
+    const [min, setMin] = useState("");
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
     const intradayTimeSeriesURL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockObjInfo.symbol}&interval=5min&outputsize=full&apikey=${API_KEY}`
 
     useEffect( ()=>{
         const fetchDailyAdjustedData = async () =>{
+            setIsLoading(true)
             try{
                 const response = await axios.get(dailyAdjustedURL);
+                if(!!response.data){
+                  console.log('is LOADING FALSE!!')
+                  setIsLoading(false)
+                }
                 // console.log("META DATA.... OBJ")
-                // console.log(response.data["Meta Data"]["2. Symbol"])
 
                 // console.log("DAILY TIME SERIES..... OBJ")
                 // console.log(response.data["Time Series (Daily)"])
-                let timeSeries = response.data["Time Series (Daily)"]
+                const dateMapObj: MapObj = {};
+                let timeSeries:StockObjInfo = response.data["Time Series (Daily)"]
+                let i = Object.entries(timeSeries).length;
+                let maxPx;
+                let minPx;
+                let stockDataArr: MyObject[] = [];
                 for (let [key, value] of Object.entries(timeSeries)) {
-                    // console.log(key)
-                    // console.log(value)
-                    value = renameKeysObj(value)
+                    console.log(key)
+                    console.log(value)
+
+                    let newPrice = parseFloat(value["5. adjusted close"]).toFixed(2);
+
+                    const newObj: MyObject = {
+                      // x: dateFns.format(new Date(key), 'MMM-dd'),
+                      x: i.toString(),
+                      y: newPrice,
+                      meta: dateFns.format(new Date(key), "MMM-dd"),
+                    }; 
+                    dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
+
+                    // Is there a max or min?
+                    if (!maxPx || !minPx) {
+                      maxPx = newPrice;
+                      minPx = newPrice; 
+                    }
+                    if (minPx && minPx > newPrice) {
+                      minPx = newPrice;
+                    }
+                    if (maxPx && maxPx < newPrice) {
+                      maxPx = newPrice;
+                    }
+              
+                    i--;
+                    newObj.y && stockDataArr.unshift(newObj);
+
                   }
-                setStockDailyPxHistory(timeSeries)
-                console.log('stockdailypxhistory')
-                console.log('stockdailypxhistory', stockDailyPxHistory)
+  
+                maxPx && setMax(maxPx);
+                minPx && setMin(minPx);
+
+                setStockData(stockDataArr);
+                setDateMap(dateMapObj);
+
+                console.log('stockData', stockData)
 
             }catch(error){
                 console.log(error)
             }
         }
-        const fetchIntradayAdjusted = async()=>{
-          try{
-            const response = await axios.get(intradayTimeSeriesURL);
-            let timeSeries = response.data["Time Series (5min)"]
-            for (let [key, value] of Object.entries(timeSeries)) {
-              console.log('key', key)
-              // console.log(value)
-              value = renameKeysObj(value)
-              console.log(value)
-            }
-            setStockIntradayPxHistory(timeSeries)
-            console.log(stockIntradayPxHistory)
+        // const fetchIntradayAdjusted = async()=>{
+        //   try{
+        //     const response = await axios.get(intradayTimeSeriesURL);
+        //     let timeSeries = response.data["Time Series (5min)"]
+        //     for (let [key, value] of Object.entries(timeSeries)) {
+        //       console.log('key', key)
+        //       // console.log(value)
+        //       value = renameKeysObj(value)
+        //       console.log(value)
+        //     }
+        //     setStockIntradayPxHistory(timeSeries)
+        //     console.log(stockIntradayPxHistory)
 
-          }catch(error){
-            console.log(error)
-          }
-        }
+        //   }catch(error){
+        //     console.log(error)
+        //   }
+        // }
 
         fetchDailyAdjustedData()
         // fetchIntradayAdjusted()
-        return ()=>{
-            setStockDailyPxHistory([])
-            setStockIntradayPxHistory([])
-        }
+        // return ()=>{
+        //     setStockData([]);
+        //     setStockIntradayPxHistory({})
+        // }
 
-    }, [stockObjInfo])
+    }, [timePeriod])
+
+  const isObjectEmpty =(obj:{}) =>{
+    return Object.keys(obj).length === 0
+  }
 
   return (
     <Modal
@@ -139,7 +195,8 @@ export const SwipeableModal = ({
         </View>
         <Divider style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }} />
         {/* <StockChart data={stockDailyPxHistory}/> */}
-        { !!stockDailyPxHistory && <ResponsiveStockChart data={stockDailyPxHistory} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod}/>}
+        {isLoading && <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>Loading...</Text>}
+        {!isLoading && stockData.length > 0 && <ResponsiveStockChart stockData={stockData} dateMap={dateMap} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod} min={min} max={max}/>}
       </View>
     </Modal>
   );

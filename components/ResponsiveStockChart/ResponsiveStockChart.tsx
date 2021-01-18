@@ -35,10 +35,14 @@ interface StockObjInfo {
 }
 
 interface ResponsiveStockChartProps {
-  data: StockObjInfo;
+  // data: StockObjInfo;
   stockObjInfo: StockObjInfo;
   setTimePeriod: any;
+  min: any;
+  max: any;
   timePeriod: string;
+  dateMap: any;
+  stockData: any
 }
 
 interface MapObj {
@@ -66,74 +70,82 @@ const timeToDaysMap:timeToDaysMap = {
 }
 
 export const ResponsiveStockChart = ({
-  data,
+  stockData,
+  dateMap,
   stockObjInfo,
+  min,
+  max,
   setTimePeriod,
   timePeriod
 }: ResponsiveStockChartProps) => {
-  const [stockData, setStockData] = useState<any[]>([]);
-  const [dateMap, setDateMap] = useState<any>({});
-  const [max, setMax] = useState("");
-  const [min, setMin] = useState("");
+  // const [stockData, setStockData] = useState<any[]>([]);
+  // const [dateMap, setDateMap] = useState<any>({});
+  // const [max, setMax] = useState("");
+  // const [min, setMin] = useState("");
   // const [timePeriod, setTimePeriod] = useState("1M")
   // console.log('ResponsiveStockChart', data)
-
+  const [isLoading, setIsLoading] = useState(true)
   
 
-  useEffect(() => {
-    console.log('use effect running.....')
-    const stockDataArr: MyObject[] = [];
-    const dateMapObj: MapObj = {};
-    let maxPx;
-    let minPx;
-    let i = Object.entries(data).length;
-    for (let [key, value] of Object.entries(data)) {
-      // console.log(key);
-      // console.log(value);
+  // useEffect(() => {
+  //   console.log('use effect running.....')
+  //   let stockDataArr: MyObject[] = [];
+  //   const dateMapObj: MapObj = {};
+  //   let maxPx;
+  //   let minPx;
+  //   let i = Object.entries(data).length;
+    
+  //   for (let [key, value] of Object.entries(data)) {
+  //     // console.log(key);
+  //     // console.log(value);
 
-      let newPrice = parseFloat(value["adjusted close"]).toFixed(2);
-      // console.log(newPrice)
-      const newObj: MyObject = {
-        // x: dateFns.format(new Date(key), 'MMM-dd'),
-        x: i.toString(),
-        y: newPrice,
-        meta: dateFns.format(new Date(key), "MMM-yy"),
-      };
+  //     let newPrice = parseFloat(value["adjusted close"]).toFixed(2);
+  //     // console.log(newPrice)
+  //     const newObj: MyObject = {
+  //       // x: dateFns.format(new Date(key), 'MMM-dd'),
+  //       x: i.toString(),
+  //       y: newPrice,
+  //       meta: dateFns.format(new Date(key), "MMM-dd"),
+  //     };
 
-      dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
+  //     dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
 
-      // Is there a max or min?
-      if (!maxPx || !minPx) {
-        maxPx = newPrice;
-        minPx = newPrice;
-      }
-      if (minPx && minPx > newPrice) {
-        minPx = newPrice;
-      }
-      if (maxPx && maxPx < newPrice) {
-        maxPx = newPrice;
-      }
+  //     // Is there a max or min?
+  //     if (!maxPx || !minPx) {
+  //       maxPx = newPrice;
+  //       minPx = newPrice; 
+  //     }
+  //     if (minPx && minPx > newPrice) {
+  //       minPx = newPrice;
+  //     }
+  //     if (maxPx && maxPx < newPrice) {
+  //       maxPx = newPrice;
+  //     }
 
-      i--;
-      newObj.y && stockDataArr.unshift(newObj);
-      // mapObj.i && mapObjArr.unshift(mapObj)
-      //unshift adds newObj to the BEGINNING of stockDataArr
-      //Adds Aug-10 to the beginning
-      // PUSH adds to the END of the stockDataArr, e.g.
-    }
+  //     i--;
+  //     newObj.y && stockDataArr.unshift(newObj);
+  //     // mapObj.i && mapObjArr.unshift(mapObj)
+  //     //unshift adds newObj to the BEGINNING of stockDataArr
+  //     //Adds Aug-10 to the beginning
+  //     // PUSH adds to the END of the stockDataArr, e.g.
+  //   }
 
-    // console.log(`maxPx: ${maxPx}, minPx:${minPx}`);
-    maxPx && setMax(maxPx);
-    minPx && setMin(minPx);
-    //https://stackoverflow.com/questions/57086672/element-implicitly-has-an-any-type-because-expression-of-type-string-cant-b
-    setStockData(stockDataArr.slice(0, timeToDaysMap[timePeriod]));
-    setDateMap(dateMapObj);
-    console.log('************************')
-    console.log(stockDataArr, dateMapObj)
-    return () => {
-      setStockData([]);
-    };
-  }, [data, timePeriod]);
+  //   // console.log(`maxPx: ${maxPx}, minPx:${minPx}`);
+  //   maxPx && setMax(maxPx);
+  //   minPx && setMin(minPx);
+  //   //https://stackoverflow.com/questions/57086672/element-implicitly-has-an-any-type-because-expression-of-type-string-cant-b
+  //   console.log(timePeriod, timeToDaysMap[timePeriod], stockDataArr.length)
+
+  //   setStockData(stockDataArr);
+  //   setDateMap(dateMapObj);
+  //   console.log('************************')
+  //   console.log(stockDataArr)
+  //   console.log(`length: ${stockData.length}, ${stockDataArr.length}`)
+  //   if(stockData) setIsLoading(false)
+  //   return () => {
+  //     setStockData([]);
+  //   };
+  // }, [timePeriod]);
 
 
 
@@ -177,7 +189,7 @@ export const ResponsiveStockChart = ({
 
   return (
     <>
-      {stockData.length > 0 && (
+      {(stockData.length > 0) && (
         <>
           {/* <DataTable.Row style={{marginRight: 15}}>
             <CustomCell text="1W"/>
@@ -189,7 +201,7 @@ export const ResponsiveStockChart = ({
           </DataTable.Row> */}
           <FlatList 
           
-          horizontal data={["1D", "1W", "1M", "3M", "6M", "1Y","2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
+          horizontal data={["1W", "1M", "3M", "6M", "1Y","2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
           />
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}
@@ -200,7 +212,7 @@ export const ResponsiveStockChart = ({
             // ]}
             data={stockData}
             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-            xDomain={{ min: 1, max: stockData.length }}
+            xDomain={{ min: +timeToDaysMap[timePeriod] -1, max: stockData.length }}
             yDomain={{
               min: Math.floor(parseFloat(min) - 2),
               max: Math.ceil(parseFloat(max) + 2),
@@ -218,7 +230,7 @@ export const ResponsiveStockChart = ({
             />
 
             <HorizontalAxis
-              tickCount={6}
+              tickCount={5}
               theme={{
                 labels: {
                   formatter: (v) => dateMap[v.toString()],
