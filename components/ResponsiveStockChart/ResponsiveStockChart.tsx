@@ -184,6 +184,7 @@ export const ResponsiveStockChart = ({
       </View>
     )
   }
+  
 
 
 
@@ -212,7 +213,7 @@ export const ResponsiveStockChart = ({
             // ]}
             data={stockData}
             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-            xDomain={{ min: +timeToDaysMap[timePeriod] -1, max: stockData.length }}
+            xDomain={{ min: Math.max(stockData.length - timeToDaysMap[timePeriod] -1, 1), max: stockData.length }}
             yDomain={{
               min: Math.floor(parseFloat(min) - 2),
               max: Math.ceil(parseFloat(max) + 2),
@@ -230,7 +231,7 @@ export const ResponsiveStockChart = ({
             />
 
             <HorizontalAxis
-              tickCount={5}
+              tickCount={7}
               theme={{
                 labels: {
                   formatter: (v) => dateMap[v.toString()],
