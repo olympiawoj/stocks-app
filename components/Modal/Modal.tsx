@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
 import {  renameKeysObj } from "../../utils/renameKeys";
 import {ResponsiveStockChart} from '../ResponsiveStockChart/ResponsiveStockChart'
+import {StockInfoTable} from '../StockInfoTable/StockInfoTable'
 import { API_KEY } from "react-native-dotenv";
 import * as dateFns from "date-fns";
 
@@ -198,6 +199,7 @@ export const SwipeableModal = ({
         {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>Loading...</Text>}
         {!isLoading && stockData.length > 0 && <ResponsiveStockChart stockData={stockData} dateMap={dateMap} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod} min={min} max={max}/>}
+        {!isLoading && stockData.length > 0 && <StockInfoTable stockObjInfo={stockObjInfo}/>}
       </View>
     </Modal>
   );
