@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../utils/colors";
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -10,13 +11,20 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "50%",
-    height: 25
+    height: 25,
+    backgroundColor: 'blue'
   },
   text: {
     color: "white",
     fontWeight: "bold",
     fontSize: 12,
-    paddingRight: 40
 
   },
+  textLabel: {
+    color: colors.gunsmokeGrey,
+    fontWeight: "bold",
+    fontSize: 12,
+    marginRight: 50,
+    backgroundColor: 'pink'
+  }
 });

@@ -23,29 +23,29 @@ export const StockInfoTable = ({stockObjInfo}:StockObjInfo) => {
     <View style={styles.mainContainer}>
       <View style={{ display: "flex", marginLeft: 37, marginTop: 10 }}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Open</Text>
+          <Text style={styles.textLabel}>Open</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>High</Text>
+          <Text style={styles.textLabel}>High</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
         <View style={styles.textContainer}>
-          <Text  style={styles.text}>Low</Text>
+          <Text  style={styles.textLabel}>Low</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
       </View>
       <View style={{ display: "flex", marginTop: 10 }}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Vol</Text>
+          <Text style={styles.textLabel}>Vol</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>P/E</Text>
+          <Text style={styles.textLabel}>P/E</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
         <View style={styles.textContainer}>
-          <Text  style={{...styles.text, paddingRight: 10}}>Mkt Cap.</Text>
+          <Text  style={{...styles.textLabel, paddingRight: 10}}>Mkt Cap.</Text>
           <Text style={styles.text}>131.32</Text>
         </View>
       </View>
