@@ -10,9 +10,7 @@ export const styles = StyleSheet.create({
   textContainer: {
     display: "flex",
     flexDirection: "row",
-    // width: "42%",
     height: 25,
-    // backgroundColor: 'blue'
     justifyContent: 'space-between',
     marginRight: 55
   },

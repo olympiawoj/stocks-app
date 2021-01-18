@@ -43,11 +43,11 @@ export const StockInfoTable = ({stockObjInfo, latestData}:StockObjInfo) => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.textLabel}>P/E</Text>
-          <Text style={styles.text}>13</Text>
+          <Text style={styles.text}>{latestData.companyOverview["PERatio"]}</Text>
         </View>
         <View style={styles.textContainer}>
           <Text  style={{...styles.textLabel, paddingRight: 10}}>Mkt Cap.</Text>
-          <Text style={styles.text}>$2.7 Trn</Text>
+          <Text style={styles.text}>{Math.floor(latestData.companyOverview["MarketCapitalization"] / 1000000000)} B</Text>
         </View>
       </View>
     </View>

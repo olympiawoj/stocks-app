@@ -65,9 +65,10 @@ export default function App() {
         );
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
-          // const companyOverview = await handleCompanyOverview(obj.symbol)
+          const companyOverview = await handleCompanyOverview(obj.symbol)
+          console.log('compayOverview', companyOverview)
           obj.price = price;
-          // obj.companyOverview = companyOverview
+          obj.companyOverview = companyOverview
           if (price) {
             setPrices((prices) => {
               return {
@@ -77,7 +78,6 @@ export default function App() {
             });
           }
         });
-        // console.log(filteredMatchesArr);
         setFilteredOptions(filteredMatchesArr.slice(0, 4));
       }
     } catch (error) {

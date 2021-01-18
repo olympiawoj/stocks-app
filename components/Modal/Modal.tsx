@@ -56,6 +56,7 @@ export const SwipeableModal = ({
     const [dateMap, setDateMap] = useState<any>({});
     const [max, setMax] = useState("");
     const [min, setMin] = useState("");
+
     const dailyAdjustedURL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockObjInfo.symbol}&outputsize=compact&apikey=${API_KEY}`;
     const intradayTimeSeriesURL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockObjInfo.symbol}&interval=5min&outputsize=full&apikey=${API_KEY}`
 
@@ -65,13 +66,8 @@ export const SwipeableModal = ({
             try{
                 const response = await axios.get(dailyAdjustedURL);
                 if(!!response.data){
-                  console.log('is LOADING FALSE!!')
                   setIsLoading(false)
                 }
-                // console.log("META DATA.... OBJ")
-
-                // console.log("DAILY TIME SERIES..... OBJ")
-                // console.log(response.data["Time Series (Daily)"])
                 const dateMapObj: MapObj = {};
                 let timeSeries:StockObjInfo = response.data["Time Series (Daily)"]
                 let i = Object.entries(timeSeries).length;
@@ -85,7 +81,6 @@ export const SwipeableModal = ({
                     let newPrice = parseFloat(value["5. adjusted close"]).toFixed(2);
 
                     const newObj: MyObject = {
-                      // x: dateFns.format(new Date(key), 'MMM-dd'),
                       x: i.toString(),
                       y: newPrice,
                       meta: dateFns.format(new Date(key), "MMM-dd"),
@@ -94,8 +89,7 @@ export const SwipeableModal = ({
                       high: value['2. high'],
                       low: value['3. low'],
                       volume: value['6. volume'],
-
-
+                      companyOverview: stockObjInfo.companyOverview
                     }; 
                     dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
 
@@ -129,23 +123,6 @@ export const SwipeableModal = ({
                 console.log(error)
             }
         }
-        // const fetchIntradayAdjusted = async()=>{
-        //   try{
-        //     const response = await axios.get(intradayTimeSeriesURL);
-        //     let timeSeries = response.data["Time Series (5min)"]
-        //     for (let [key, value] of Object.entries(timeSeries)) {
-        //       console.log('key', key)
-        //       // console.log(value)
-        //       value = renameKeysObj(value)
-        //       console.log(value)
-        //     }
-        //     setStockIntradayPxHistory(timeSeries)
-        //     console.log(stockIntradayPxHistory)
-
-        //   }catch(error){
-        //     console.log(error)
-        //   }
-        // }
 
         fetchDailyAdjustedData()
         // fetchIntradayAdjusted()
@@ -207,7 +184,7 @@ export const SwipeableModal = ({
         {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>Loading...</Text>}
         {!isLoading && stockData.length > 0 && <ResponsiveStockChart stockData={stockData} dateMap={dateMap} stockObjInfo={stockObjInfo} setTimePeriod={setTimePeriod} timePeriod={timePeriod} min={min} max={max}/>}
-        {!isLoading && stockData.length > 0 && <StockInfoTable stockObjInfo={stockObjInfo} latestData={stockData[stockData.length-1]}/>}
+        {stockData.length > 0 && <StockInfoTable stockObjInfo={stockObjInfo} latestData={stockData[stockData.length-1]}/>}
       </View>
     </Modal>
   );

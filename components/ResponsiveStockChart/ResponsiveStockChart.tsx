@@ -78,103 +78,14 @@ export const ResponsiveStockChart = ({
   setTimePeriod,
   timePeriod
 }: ResponsiveStockChartProps) => {
-  // const [stockData, setStockData] = useState<any[]>([]);
-  // const [dateMap, setDateMap] = useState<any>({});
-  // const [max, setMax] = useState("");
-  // const [min, setMin] = useState("");
-  // const [timePeriod, setTimePeriod] = useState("1M")
-  // console.log('ResponsiveStockChart', data)
-  const [isLoading, setIsLoading] = useState(true)
+
   
-
-  // useEffect(() => {
-  //   console.log('use effect running.....')
-  //   let stockDataArr: MyObject[] = [];
-  //   const dateMapObj: MapObj = {};
-  //   let maxPx;
-  //   let minPx;
-  //   let i = Object.entries(data).length;
-    
-  //   for (let [key, value] of Object.entries(data)) {
-  //     // console.log(key);
-  //     // console.log(value);
-
-  //     let newPrice = parseFloat(value["adjusted close"]).toFixed(2);
-  //     // console.log(newPrice)
-  //     const newObj: MyObject = {
-  //       // x: dateFns.format(new Date(key), 'MMM-dd'),
-  //       x: i.toString(),
-  //       y: newPrice,
-  //       meta: dateFns.format(new Date(key), "MMM-dd"),
-  //     };
-
-  //     dateMapObj[i.toString()] = dateFns.format(new Date(key), "MMM-dd");
-
-  //     // Is there a max or min?
-  //     if (!maxPx || !minPx) {
-  //       maxPx = newPrice;
-  //       minPx = newPrice; 
-  //     }
-  //     if (minPx && minPx > newPrice) {
-  //       minPx = newPrice;
-  //     }
-  //     if (maxPx && maxPx < newPrice) {
-  //       maxPx = newPrice;
-  //     }
-
-  //     i--;
-  //     newObj.y && stockDataArr.unshift(newObj);
-  //     // mapObj.i && mapObjArr.unshift(mapObj)
-  //     //unshift adds newObj to the BEGINNING of stockDataArr
-  //     //Adds Aug-10 to the beginning
-  //     // PUSH adds to the END of the stockDataArr, e.g.
-  //   }
-
-  //   // console.log(`maxPx: ${maxPx}, minPx:${minPx}`);
-  //   maxPx && setMax(maxPx);
-  //   minPx && setMin(minPx);
-  //   //https://stackoverflow.com/questions/57086672/element-implicitly-has-an-any-type-because-expression-of-type-string-cant-b
-  //   console.log(timePeriod, timeToDaysMap[timePeriod], stockDataArr.length)
-
-  //   setStockData(stockDataArr);
-  //   setDateMap(dateMapObj);
-  //   console.log('************************')
-  //   console.log(stockDataArr)
-  //   console.log(`length: ${stockData.length}, ${stockDataArr.length}`)
-  //   if(stockData) setIsLoading(false)
-  //   return () => {
-  //     setStockData([]);
-  //   };
-  // }, [timePeriod]);
-
-
-
-  // interface CustomCellProps {
-  //     text: string
-  // }
-  // const CustomCell = ({text}:CustomCellProps)=>{
-  //   const selectItem = (text:string) =>{
-        
-  //   }
-  //   const onTextPress = () =>{
-  //       console.log(text)
-  //       selectItem(text)
-  //       setTimePeriod(text)
-  //     }
-
-  //   return (
-  //   <DataTable.Cell numeric><Text style={{color: 'white', fontWeight: 'bold'}} onPress={onTextPress}>{text}</Text></DataTable.Cell>
-  //   )
-  // }
-
   interface RenderItemProps{
     item: string;
   }
   const renderItem = ({item}:RenderItemProps)=>{
     const onTextPress = () =>{
-      console.log(item)
       setTimePeriod(item)
-      console.log(item)
     }
 
     return (
