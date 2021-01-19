@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { AppRegistry } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import { AppRegistry } from "react-native";
 import axios from "axios";
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from "react-native-paper";
 import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
-import {SwipeableModal} from './components/Modal/Modal'
+import { SwipeableModal } from "./components/Modal/Modal";
 import { API_KEY } from "react-native-dotenv";
-
 
 interface filteredOptions {
   symbol: string;
@@ -28,16 +27,16 @@ interface filteredOptions {
 }
 
 interface StockObjInfo {
-    currency: string;
-    marketClose: string;
-    marketOpen: string;
-    marketScore: string;
-    name: string;
-    region: string;
-    symbol: string;
-    timezone: string;
-    type: string;
-    price: string;
+  currency: string;
+  marketClose: string;
+  marketOpen: string;
+  marketScore: string;
+  name: string;
+  region: string;
+  symbol: string;
+  timezone: string;
+  type: string;
+  price: string;
 }
 
 interface BestMatchesInfo {
@@ -45,11 +44,12 @@ interface BestMatchesInfo {
   region: string;
 }
 
-
 export default function App() {
   const [value, setValue] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState<filteredOptions[] | []>([]);
-  const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({})
+  const [filteredOptions, setFilteredOptions] = useState<
+    filteredOptions[] | []
+  >([]);
+  const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({});
   const [prices, setPrices] = useState<number[] | []>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -61,14 +61,16 @@ export default function App() {
       if (response.data) {
         const bestMatchesArr = response.data["bestMatches"];
         renameKeysArr(bestMatchesArr);
-        let filteredMatchesArr = bestMatchesArr.filter((obj:BestMatchesInfo) => parseFloat(obj.matchScore) > 0.2 && obj.region === "United States"
+        let filteredMatchesArr = bestMatchesArr.filter(
+          (obj: BestMatchesInfo) =>
+            parseFloat(obj.matchScore) > 0.2 && obj.region === "United States"
         );
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
-          const companyOverview = await handleCompanyOverview(obj.symbol)
-          console.log('compayOverview', companyOverview)
+          const companyOverview = await handleCompanyOverview(obj.symbol);
+          console.log("compayOverview", companyOverview);
           obj.price = price;
-          obj.companyOverview = companyOverview
+          obj.companyOverview = companyOverview;
           if (price) {
             setPrices((prices) => {
               return {
@@ -117,45 +119,70 @@ export default function App() {
     setValue("");
   };
 
-  const handleModalClose = () =>{
-    setIsModalVisible(isModalVisible =>{
-      return !isModalVisible
-    })
-  }
-  
+  const handleModalClose = () => {
+    setIsModalVisible((isModalVisible) => {
+      return !isModalVisible;
+    });
+  };
 
   const options = { month: "long", day: "numeric" };
 
   return (
     <PaperProvider>
-    <View style={styles.container}>
-      <Text style={{ color: "white", fontSize: 25, fontWeight: "800"}}>
-        Stocks
-      </Text>
-      <Text
-        style={{ color: colors.gunsmokeGrey, fontSize: 25, fontWeight: "800", marginBottom: 10}}
-      >
-        {new Date().toLocaleDateString(undefined, options)}
-      </Text>
-      <View style={styles.center}>
-      <SearchBar
-        value={value}
-        setValue={setValue}
-        filteredOptions={filteredOptions}
-        handleSearch={handleSearch}
-        handleCancelSearch={handleCancelSearch}
-      />
-      {filteredOptions && filteredOptions.length > 0 && (
-        <AutocompleteSearchBarResults
-          filteredOptions={filteredOptions}
-          prices={prices}
-          setModalVisible={setIsModalVisible}
-          setStockObjInfo={setStockObjInfo}
-        />
-      )}
+      <View style={styles.container}>
+        <Text style={{ color: "white", fontSize: 25, fontWeight: "800" }}>
+          Stocks
+        </Text>
+        <Text
+          style={{
+            color: colors.gunsmokeGrey,
+            fontSize: 25,
+            fontWeight: "800",
+            marginBottom: 10,
+          }}
+        >
+          {new Date().toLocaleDateString(undefined, options)}
+        </Text>
+        <View style={styles.center}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <SearchBar
+              value={value}
+              setValue={setValue}
+              filteredOptions={filteredOptions}
+              handleSearch={handleSearch}
+              handleCancelSearch={handleCancelSearch}
+            />
+            {filteredOptions && filteredOptions.length > 0 && (
+              <Pressable onPress={handleCancelSearch}>
+                <Text style={{ color: "#007AFF", paddingBottom: 20, paddingLeft: 5}}>
+                  Cancel
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {filteredOptions && filteredOptions.length > 0 && (
+            <AutocompleteSearchBarResults
+              filteredOptions={filteredOptions}
+              prices={prices}
+              setModalVisible={setIsModalVisible}
+              setStockObjInfo={setStockObjInfo}
+            />
+          )}
+        </View>
+        {Object.keys(stockObjInfo).length > 0 && (
+          <SwipeableModal
+            isModalVisible={isModalVisible}
+            handleModalClose={handleModalClose}
+            stockObjInfo={stockObjInfo}
+          />
+        )}
       </View>
-    { (Object.keys(stockObjInfo).length > 0) &&  <SwipeableModal isModalVisible={isModalVisible} handleModalClose={handleModalClose} stockObjInfo={stockObjInfo}/>}
-    </View>
     </PaperProvider>
   );
 }
@@ -164,13 +191,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black,
-    paddingTop: 50,
+    paddingTop: 75,
     padding: 15,
   },
   center: {
-    alignItems: 'center'
-  }
+    alignItems: "center",
+  },
 });
 
-
-AppRegistry.registerComponent('stocks', () => App);
+AppRegistry.registerComponent("stocks", () => App);

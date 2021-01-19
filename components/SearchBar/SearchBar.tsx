@@ -13,11 +13,10 @@ export const SearchBar = ({ value, setValue, filteredOptions, handleSearch, hand
     <View
     style={{
       backgroundColor: colors.searchBackground,
-      width: '100%',
+      width: filteredOptions.length > 0 ? '85%' : '100%',
       borderRadius: 20,
       padding: 5,
-      marginBottom: 20
-      
+      marginBottom: 20,
     }}
   >
     <View
@@ -25,11 +24,11 @@ export const SearchBar = ({ value, setValue, filteredOptions, handleSearch, hand
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        width: '100%'
+        width: '100%',
       }}
       
     >
-      <FontAwesomeIcon icon={faSearch} color={colors.gunsmokeGrey} />
+      <FontAwesomeIcon icon={faSearch} color={colors.gunsmokeGrey} style={{marginLeft:  5}} />
       <TextInput
         style={{ height: 35, width: 200, flex: 1, paddingLeft: 7, color: colors.gunsmokeGrey}}
         value={value}
@@ -38,7 +37,7 @@ export const SearchBar = ({ value, setValue, filteredOptions, handleSearch, hand
         placeholderTextColor={colors.gunsmokeGrey}
         onSubmitEditing={handleSearch}
       />
-       {(filteredOptions && filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} /></Pressable>}
+       {(filteredOptions && filteredOptions.length > 0)  && <Pressable onPressIn={handleCancelSearch}><FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} style={{marginRight:5}}/></Pressable>}
     </View>
   </View>
   )
