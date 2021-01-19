@@ -38,6 +38,7 @@ White
     - 1D, 1W, 1M, 3M, 6M, 1Y, 2Y, 5Y
 [] Stock API
 [] Animations
+    - React Native Animated API
     - Swipe to remove
     - Click to have individual stock info slide up
     - Moving tickers on top of screen with charts

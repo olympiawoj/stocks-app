@@ -130,6 +130,8 @@ export default function App() {
   return (
     <PaperProvider>
       <View style={styles.container}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+        <View>
         <Text style={{ color: "white", fontSize: 25, fontWeight: "800" }}>
           Stocks
         </Text>
@@ -143,6 +145,11 @@ export default function App() {
         >
           {new Date().toLocaleDateString(undefined, options)}
         </Text>
+        </View>
+        <View style={{display: 'flex', justifyContent: 'flex-start', marginLeft: 150}}>
+          <Text style={{ color: "#007AFF",  paddingLeft: 5, paddingTop:10, fontSize: 17}}>Edit</Text>
+          </View>
+        </View>
         <View style={styles.center}>
           <View
             style={{
