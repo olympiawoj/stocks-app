@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black,
-    paddingTop: 100,
+    paddingTop: 50,
     padding: 15,
   },
   center: {

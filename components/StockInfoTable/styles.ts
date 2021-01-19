@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
   mainContainer: {
     display: "flex",
     flexDirection: "row",
-    width: '100%'
+    width: '100%',
+    // backgroundColor: 'pink',
   },
   textContainer: {
     display: "flex",
