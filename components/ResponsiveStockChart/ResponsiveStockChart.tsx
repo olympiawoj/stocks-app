@@ -113,7 +113,7 @@ export const ResponsiveStockChart = ({
           </DataTable.Row> */}
           <FlatList 
           
-          horizontal data={["1W", "1M", "3M", "6M", "1Y","2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
+          horizontal data={["1D", "1W", "1M", "3M", "6M", "1Y","2Y"]} renderItem={renderItem} keyExtractor={item => item} style={{  flexGrow: 0}}
           />
           <Chart
             style={{ height: 250, width: "100%", alignContent: 'center' }}
