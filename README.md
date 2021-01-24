@@ -42,6 +42,8 @@ White
     - Swipe to remove
     - Click to have individual stock info slide up
     - Moving tickers on top of screen with charts
+    - https://codedaily.io/courses/5/Master-React-Native-Animations/42
+    - https://egghead.io/lessons/react-create-an-expanding-notify-input-with-success-message-in-react-native    
 [] Search - By both ticker and company name, fuzzy search
 [] News API? 
 [] Extra features
@@ -49,3 +51,11 @@ White
     - Text alerts for different price triggers
     - Authentication
     - Light/dark mode? Light/dark mode toggle?
+[] Icons
+    - https://fontawesome.com/icons/minus-circle?style=solid
+    - https://fontawesome.com/icons/bars?style=solid
+    - https://fontawesome.com/icons/microphone-slash?style=solid / https://fontawesome.com/icons/microphone?style=solid
+
+[] Async Storage
+    - https://react-native-async-storage.github.io/async-storage/docs/install
+

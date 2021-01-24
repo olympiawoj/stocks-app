@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity} from "react-native";
 import { styles } from "./styles";
 
 interface StockObjInfo {
@@ -20,7 +20,7 @@ export const StockInfoTable = ({ stockObjInfo, latestData }: StockObjInfo) => {
   console.log(stockObjInfo);
   console.log("latestData", latestData);
   return (
-    // <View style={{ flex: 1, height: 100 }}>
+    <View style={{ flex: 1, height: 100,  }}>
       <ScrollView
       horizontal={true}
       decelerationRate={0}
@@ -29,6 +29,10 @@ export const StockInfoTable = ({ stockObjInfo, latestData }: StockObjInfo) => {
             width: 500, 
             flexGrow: 1}}
       >
+        <TouchableOpacity style={{display: 'flex',
+flexDirection: 'row',}}
+activeOpacity={1}
+>
         <View style={{ marginLeft: 37, marginTop: 10 }}>
           <View style={styles.textContainer}>
             <Text style={styles.textLabel}>Open</Text>
@@ -85,13 +89,13 @@ export const StockInfoTable = ({ stockObjInfo, latestData }: StockObjInfo) => {
             </Text>
             <Text style={styles.text}>
               {Math.floor(
-                latestData.companyOverview["200DayMovingAverage"] / 1000000000
+                latestData.companyOverview["200DayMovingAverage"]
               )}{" "}
-              B
             </Text>
           </View>
         </View>
+        </TouchableOpacity>
       </ScrollView>
-    // </View>
+    </View>
   );
 };

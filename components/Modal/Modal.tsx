@@ -198,6 +198,7 @@ export const SwipeableModal = ({
       onSwipeComplete={handleModalClose}
       useNativeDriverForBackdrop
       swipeDirection={["down"]}
+      propagateSwipe
     >
       <View style={styles.content}>
         <View style={styles.view}>
