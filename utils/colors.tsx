@@ -9,5 +9,6 @@ export const colors ={
     gunsmokeGrey: '#7C8484',
     white: '#fefefe',
     searchBackground: 	'#35343c',
-    darkGrey: '#2c2c2f'
+    darkGrey: '#2c2c2f',
+    blue:  "#007AFF"
 }

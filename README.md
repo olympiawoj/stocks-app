@@ -46,6 +46,9 @@ White
     - https://egghead.io/lessons/react-create-an-expanding-notify-input-with-success-message-in-react-native    
 [] Search - By both ticker and company name, fuzzy search
 [] News API? 
+    - https://newsapi.org/pricing - free developer account
+    - https://stocknewsapi.com/pricing - $19.99 per month
+
 [] Extra features
     - Market open or closed notifications
     - Text alerts for different price triggers
@@ -58,4 +61,5 @@ White
 
 [] Async Storage
     - https://react-native-async-storage.github.io/async-storage/docs/install
-
+    - https://docs.expo.io/versions/latest/sdk/async-storage/
+    - https://docs.expo.io/versions/v40.0.0/sdk/securestore/

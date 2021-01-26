@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../utils/colors";
 import axios from "axios";
 import Modal from "react-native-modal";
@@ -50,7 +51,9 @@ export const SwipeableModal = ({
   stockObjInfo,
 }: SwipeableModal) => {
   const [stockData, setStockData] = useState<any[]>([]);
-  const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState<any[]>([]);
+  const [stockIntradayPxHistory, setStockIntradayPxHistory] = useState<any[]>(
+    []
+  );
   const [timePeriod, setTimePeriod] = useState("1M");
   const [isLoading, setIsLoading] = useState(true);
   const [dateMap, setDateMap] = useState<any>({});
@@ -134,7 +137,7 @@ export const SwipeableModal = ({
   }, [timePeriod]);
 
   const fetchIntradayAdjusted = async () => {
-    console.log('intraday running.....')
+    console.log("intraday running.....");
     setIsLoading(true);
     try {
       const response = await axios.get(intradayTimeSeriesURL);
@@ -179,7 +182,7 @@ export const SwipeableModal = ({
 
       setStockIntradayPxHistory(stockDataArr);
       setDateMap(dateMapObj);
-      console.log('stockIntradayPXHistory', stockIntradayPxHistory)
+      console.log("stockIntradayPXHistory", stockIntradayPxHistory);
 
       // console.log(timeSeries)
     } catch (err) {}
@@ -187,6 +190,18 @@ export const SwipeableModal = ({
 
   const isObjectEmpty = (obj: {}) => {
     return Object.keys(obj).length === 0;
+  };
+
+  const setStringValue = async () => {
+    try {
+      if (stockObjInfo.symbol) {
+        await AsyncStorage.setItem("key", stockObjInfo.symbol);
+        console.log("symbol", stockObjInfo.symbol);
+      }
+    } catch (e) {
+      // save error
+      console.log(e);
+    }
   };
 
   return (
@@ -206,6 +221,8 @@ export const SwipeableModal = ({
             <FontAwesomeIcon icon={faTimesCircle} color={colors.gunsmokeGrey} />
           </TouchableOpacity>
         </View>
+        <View style={{display:'flex',flexDirection:'row'}}>
+          <View style={{display:'flex',flexDirection:'column'}}>
         <View
           style={{
             flexDirection: "row",
@@ -218,7 +235,7 @@ export const SwipeableModal = ({
             {stockObjInfo.name}
           </Text>
         </View>
-        <Divider style={{ backgroundColor: colors.searchBackground }} />
+        <Divider style={{ backgroundColor: colors.searchBackground, width: '100%'}} />
         <View
           style={{
             flexDirection: "column",
@@ -232,10 +249,38 @@ export const SwipeableModal = ({
           <Text style={{ color: colors.gunsmokeGrey, fontWeight: "800" }}>
             At Close
           </Text>
-        </View>
-        <Divider
+          </View>
+          <Divider
           style={{ backgroundColor: colors.searchBackground, marginBottom: 20 }}
         />
+        </View>
+        <View>
+          
+
+        <TouchableOpacity
+            style={{
+              marginLeft: 80,
+              marginBottom: 10,
+              paddingTop: 10,
+              paddingBottom: 10,
+              backgroundColor: colors.blue,
+              borderRadius: 10,
+            }}
+            onPress={setStringValue}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                paddingLeft: 10,
+                paddingRight: 10,
+              }}
+            >
+              Add
+            </Text>
+          </TouchableOpacity>
+        </View>
+        </View>
         {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && (
           <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>

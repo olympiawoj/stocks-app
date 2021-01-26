@@ -169,7 +169,7 @@ export default function App() {
             />
             {filteredOptions && filteredOptions.length > 0 && (
               <Pressable onPress={handleCancelSearch}>
-                <Text style={{ color: "#007AFF", paddingBottom: 20, paddingLeft: 5}}>
+                <Text style={{ color: colors.blue, paddingBottom: 20, paddingLeft: 5}}>
                   Cancel
                 </Text>
               </Pressable>
