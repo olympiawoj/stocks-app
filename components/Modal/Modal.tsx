@@ -192,11 +192,33 @@ export const SwipeableModal = ({
     return Object.keys(obj).length === 0;
   };
 
+  const clearAllData = () => {
+    AsyncStorage.getAllKeys()
+        .then(keys => AsyncStorage.multiRemove(keys))
+        .then(() => alert('success'));
+}
+
   const setStringValue = async () => {
+    // clearAllData()
     try {
       if (stockObjInfo.symbol) {
-        await AsyncStorage.setItem("key", stockObjInfo.symbol);
-        console.log("symbol", stockObjInfo.symbol);
+        let stocks = await AsyncStorage.getItem('key')!;
+        console.log(`stocks:${stocks}`)
+        if(stocks){
+          console.log('parse', JSON.parse(stocks))
+          let stocksArr= JSON.parse(stocks) 
+          if(stocksArr.length > 0){
+            stocksArr.push(stockObjInfo.symbol)
+            await AsyncStorage.setItem("key", JSON.stringify(stocksArr));
+          }
+        }
+        else {
+          let newArr = []
+          newArr.push(stockObjInfo.symbol)
+          console.log({newArr})
+          await AsyncStorage.setItem("key", JSON.stringify(newArr));
+        }
+      
       }
     } catch (e) {
       // save error
