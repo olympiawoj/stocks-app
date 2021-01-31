@@ -1,13 +1,13 @@
-import React, { useState, useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { AppRegistry } from "react-native";
 import axios from "axios";
 import { Provider as PaperProvider } from "react-native-paper";
-import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
-import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
-import { SearchBar } from "./components/SearchBar/SearchBar";
-import { colors } from "./utils/colors";
-import { SwipeableModal } from "./components/Modal/Modal";
+import { renameKeysArr, renameKeysObj } from "../../utils/renameKeys";
+import { AutocompleteSearchBarResults } from "../../components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
+import { SearchBar } from "../../components/SearchBar/SearchBar";
+import { colors } from "../../utils/colors";
+import { SwipeableModal } from "../../components/Modal/Modal";
 import { API_KEY } from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -45,7 +45,7 @@ interface BestMatchesInfo {
   region: string;
 }
 
-export default function App() {
+export const WatchList = () => {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<
     filteredOptions[] | []
@@ -53,7 +53,6 @@ export default function App() {
   const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({});
   const [prices, setPrices] = useState<number[] | []>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
 
   const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
 
@@ -70,7 +69,7 @@ export default function App() {
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
           const companyOverview = await handleCompanyOverview(obj.symbol);
-          console.log("compayOverview", companyOverview);
+          // console.log("compayOverview", companyOverview);
           obj.price = price;
           obj.companyOverview = companyOverview;
           if (price) {
@@ -129,13 +128,13 @@ export default function App() {
 
   const options = { month: "long", day: "numeric" };
 
-   useEffect(()=>{
+  useEffect(()=>{
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('key')
+        const value = await AsyncStorage.getItem('@storage_Key')
         if(value !== null) {
           // value previously stored
-          console.log('value in asyncstorage', value)
+          console.log('value', value)
         }
       } catch(e) {
         // error reading value
@@ -219,12 +218,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black,
-    paddingTop: 75,
+    // paddingTop: 75,
     padding: 15,
   },
   center: {
     alignItems: "center",
   },
 });
-
-AppRegistry.registerComponent("stocks", () => App);

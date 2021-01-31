@@ -17,8 +17,8 @@ interface StockObjInfo {
 }
 
 export const StockInfoTable = ({ stockObjInfo, latestData }: StockObjInfo) => {
-  console.log(stockObjInfo);
-  console.log("latestData", latestData);
+  // console.log(stockObjInfo);
+  // console.log("latestData", latestData);
   return (
     <View style={{ flex: 1, height: 100,  }}>
       <ScrollView

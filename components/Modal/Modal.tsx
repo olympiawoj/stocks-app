@@ -118,8 +118,8 @@ export const SwipeableModal = ({
         setStockData(stockDataArr);
         setDateMap(dateMapObj);
 
-        console.log("stockData", stockData);
-        console.log(dateMap);
+        // console.log("stockData", stockData);
+        // console.log(dateMap);
       } catch (error) {
         console.log(error);
       }
