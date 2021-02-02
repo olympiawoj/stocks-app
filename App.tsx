@@ -132,10 +132,13 @@ export default function App() {
    useEffect(()=>{
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('key')
-        if(value !== null) {
+        const watchlist = await AsyncStorage.getItem('watchlist')
+        if(watchlist !== null) {
           // value previously stored
-          console.log('value in asyncstorage', value)
+          console.log('value in asyncstorage', watchlist)
+          let watchlistArr= JSON.parse(watchlist) 
+    
+          
         }
       } catch(e) {
         // error reading value

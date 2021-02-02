@@ -202,21 +202,21 @@ export const SwipeableModal = ({
     // clearAllData()
     try {
       if (stockObjInfo.symbol) {
-        let stocks = await AsyncStorage.getItem('key')!;
+        let stocks = await AsyncStorage.getItem('watchlist')!;
         console.log(`stocks:${stocks}`)
         if(stocks){
           console.log('parse', JSON.parse(stocks))
           let stocksArr= JSON.parse(stocks) 
           if(stocksArr.length > 0){
             stocksArr.push(stockObjInfo.symbol)
-            await AsyncStorage.setItem("key", JSON.stringify(stocksArr));
+            await AsyncStorage.setItem("watchlist", JSON.stringify(stocksArr));
           }
         }
         else {
           let newArr = []
           newArr.push(stockObjInfo.symbol)
           console.log({newArr})
-          await AsyncStorage.setItem("key", JSON.stringify(newArr));
+          await AsyncStorage.setItem("watchlist", JSON.stringify(newArr));
         }
       
       }
