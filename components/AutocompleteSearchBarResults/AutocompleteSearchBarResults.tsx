@@ -25,8 +25,7 @@ interface AutoCompleteSearchBarResultsProps {
 }
 
 export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }:AutoCompleteSearchBarResultsProps) => {
-
-
+  
   const onRowPress = (item:filteredOption) => {
     setModalVisible(true)
     setStockObjInfo(item)

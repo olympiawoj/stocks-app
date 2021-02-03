@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../utils/colors";
 import axios from "axios";
@@ -8,7 +8,6 @@ import Modal from "react-native-modal";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Divider } from "react-native-paper";
-import { renameKeysObj } from "../../utils/renameKeys";
 import { ResponsiveStockChart } from "../ResponsiveStockChart/ResponsiveStockChart";
 import { StockInfoTable } from "../StockInfoTable/StockInfoTable";
 import { API_KEY } from "react-native-dotenv";
@@ -304,9 +303,7 @@ export const SwipeableModal = ({
         </View>
         {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && (
-          <Text style={{ color: "white", fontSize: 20, fontWeight: "800" }}>
-            Loading...
-          </Text>
+          <ActivityIndicator size="small" color="white"/>
         )}
         {!isLoading && stockData.length > 0 && (
           <ResponsiveStockChart

@@ -72,7 +72,6 @@ export default function App() {
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
           const companyOverview = await handleCompanyOverview(obj.symbol);
-          // console.log("compayOverview", companyOverview);
           obj.price = price;
           obj.companyOverview = companyOverview;
           if (price) {
@@ -129,7 +128,7 @@ export default function App() {
                   </Text>
                   </View>
                   <View style={{display: 'flex', justifyContent: 'flex-start', marginLeft: 150}}>
-                    <Text style={{ color: "#007AFF",  paddingLeft: 5, paddingTop:10, fontSize: 17}}>Edit</Text>
+                    {/* <Text style={{ color: "#007AFF",  paddingLeft: 5, paddingTop:10, fontSize: 17}}>Edit</Text> */}
                     </View>
                   </View>
         )}
@@ -158,7 +157,7 @@ export default function App() {
           </View>
           {filteredOptions.length === 0 && (
              (
-              <Watchlist/>
+              <Watchlist />
             )
           )}
           {filteredOptions && filteredOptions.length > 0 && (
