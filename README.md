@@ -2,7 +2,7 @@
 
 📈 A Stock Watchlist and Charting App built in React Native
 
-![Stock Watchlist and Charting app gif](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Stock Watchlist and Charting app gif](./assets/stock-app.gif)
 
 ## Table of Contents
 
