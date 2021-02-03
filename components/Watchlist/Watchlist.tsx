@@ -43,13 +43,15 @@ export const Watchlist = () => {
           console.log("arr", myWatchlist);
         }
       } catch (e) {
-        // error reading value
+        console.log(e)
       }
     };
     getData();
   }, []);
 
-
+  const removeTicker = () =>{
+    // TO DO: async storage remove
+  }
 
   return (
     <View>
@@ -57,36 +59,45 @@ export const Watchlist = () => {
         myWatchlist.map((stock) => {
           return (
             <Swipeable
-            
-            friction={2}
-            leftThreshold={80}
-            onSwipeableOpen={() => console.log('swipe opening')}
-            renderRightActions={()=>(
-              <View style={{backgroundColor: 'red'}}>
-                <Text>Remove</Text>
-              </View>
-            )}
+              friction={2}
+              leftThreshold={125}
+              onSwipeableOpen={() => console.log("swipe opening")}
+              renderRightActions={() => (
+                <View
+                  style={{
+                    backgroundColor: "red",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    marginRight: 16,
+                    padding: 10
+                  }}
+                  onClick={removeTicker}
+                >
+                  <Text style={{color: 'white', fontWeight: 'bold'}}>Remove</Text>
+                </View>
+              )}
             >
               <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignContent: 'center',
+                  alignContent: "center",
                   padding: 10,
-                  width: 300,
-                  height: 100,
+                  width: 350,
+                  height: 75,
                 }}
               >
                 <View>
-                  <Text style={{ color: "white", fontSize: 17 }}>
+                  <Text style={{ color: "white", fontSize: 17, fontWeight: 'bold' }}>
                     {stock.ticker}
                   </Text>
                   <Text key={stock.name} style={{ color: colors.gunsmokeGrey }}>
                     {stock.name}
                   </Text>
                 </View>
-                <Text style={{ color: "white" }}>
+                <Text style={{ color: "white", fontWeight: 'bold' }}>
                   {stock.price?.slice(0, -2)}
                 </Text>
               </View>
