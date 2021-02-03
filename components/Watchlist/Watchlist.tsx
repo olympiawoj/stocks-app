@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {Text, View} from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {handleQuote, handleCompanyOverview} from '../../utils/api'
+import { colors } from "../../utils/colors";
 
 interface Watchlist {
   ticker: string;
@@ -53,7 +54,22 @@ export const Watchlist = ()=>{
   return (
     <View>{myWatchlist.length > 0  && myWatchlist.map(stock => {
       return (
-        <Text style={{color: 'white'}}>{stock.name}</Text>
+          <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 10,
+            width: 300,
+            height: 75
+          }}
+        > 
+        <View>
+        <Text style={{ color: "white", fontSize: 17}}>{stock.ticker}</Text>
+        <Text key={stock.name} style={{color: colors.gunsmokeGrey}}>{stock.name}</Text>
+        </View>
+        <Text style={{ color: "white" }}>{stock.price?.slice(0, -2)}</Text>
+        </View>
       )
     })}</View>
   )
