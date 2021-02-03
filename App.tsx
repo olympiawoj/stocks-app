@@ -29,6 +29,7 @@ interface filteredOptions {
   length: number;
 }
 
+
 interface StockObjInfo {
   currency: string;
   marketClose: string;
@@ -157,7 +158,7 @@ export default function App() {
           </View>
           {filteredOptions.length === 0 && (
              (
-              <Watchlist />
+              <Watchlist setStockObjInfo={setStockObjInfo}   setModalVisible={setIsModalVisible} />
             )
           )}
           {filteredOptions && filteredOptions.length > 0 && (

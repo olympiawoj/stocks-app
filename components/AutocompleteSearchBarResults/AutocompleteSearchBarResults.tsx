@@ -6,15 +6,16 @@ import { Dispatch, SetStateAction } from "react";
 
 interface filteredOption {
   symbol: string;
-  name: string;
-  type: string;
-  region: string;
-  marketOpen: string;
-  marketClose: string;
-  timezone: string;
-  currency: string;
-  matchScore: string;
+  name?: string;
+  type?: string;
+  region?: string;
+  marketOpen?: string;
+  marketClose?: string;
+  timezone?: string;
+  currency?: string;
+  matchScore?: string;
   price?: string;
+  companyOverview?: object;
 }
 
 interface AutoCompleteSearchBarResultsProps {
@@ -27,8 +28,15 @@ interface AutoCompleteSearchBarResultsProps {
 export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModalVisible, setStockObjInfo }:AutoCompleteSearchBarResultsProps) => {
   
   const onRowPress = (item:filteredOption) => {
+    const newItem = {
+      price: item.price,
+      companyOverview: item.companyOverview,
+      symbol: item.symbol
+    }
+
+    console.log('item', item)
     setModalVisible(true)
-    setStockObjInfo(item)
+    setStockObjInfo(newItem)
   }
 
   const renderItem:ListRenderItem<filteredOption> = ({ item }) => {

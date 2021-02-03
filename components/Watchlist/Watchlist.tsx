@@ -13,12 +13,13 @@ import {
 import { GestureResponderEvent } from "react-native";
 
 interface Watchlist {
-  ticker: string;
+  symbol: string;
   price: string;
   name: string;
   [props: string]: string;
 }
-export const Watchlist = () => {
+//@ts-ignore
+export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
   const [myWatchlist, setMyWatchlist] = useState<Watchlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,17 +29,16 @@ export const Watchlist = () => {
       try {
         const watchlist = await AsyncStorage.getItem("watchlist");
         if (watchlist !== null) {
-          // value previously stored
-          console.log("value in asyncstorage", watchlist);
+          // value previously stored1
           let watchlistArr = JSON.parse(watchlist);
-          let watchlistPricesArr: Watchlist[] = [];
           watchlistArr.forEach(async (ticker: string) => {
             try {
               const price = await handleQuote(ticker);
               const companyOverview = await handleCompanyOverview(ticker);
               const newStockObj = {
-                ticker,
+                symbol: ticker,
                 price,
+                companyOverview: companyOverview,
                 name: companyOverview["Name"],
               } as Watchlist;
               //@ts-ignore
@@ -108,12 +108,16 @@ export const Watchlist = () => {
                   width: 350,
                   height: 75,
                 }}
+                onPress={()=>{
+                  setStockObjInfo( item)
+                  setModalVisible(true)
+                }}
               >
                 <View>
                   <Text
                     style={{ color: "white", fontSize: 17, fontWeight: "bold" }}
                   >
-                    {item.ticker}
+                    {item.symbol}
                   </Text>
                   <Text key={item.name} style={{ color: colors.gunsmokeGrey }}>
                     {item.name}
