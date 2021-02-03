@@ -15,7 +15,8 @@ interface filteredOption {
   currency?: string;
   matchScore?: string;
   price?: string;
-  companyOverview?: object;
+  companyOverview?: {[propName: string]: any; };
+  [propName: string]: any; // string index signature - allwos us to have extra properties
 }
 
 interface AutoCompleteSearchBarResultsProps {
@@ -31,7 +32,8 @@ export const AutocompleteSearchBarResults = ({ filteredOptions, prices, setModal
     const newItem = {
       price: item.price,
       companyOverview: item.companyOverview,
-      symbol: item.symbol
+      symbol: item.symbol,
+      name: item.companyOverview && item["companyOverview"]["Name"],
     }
 
     console.log('item', item)

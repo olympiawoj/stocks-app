@@ -77,8 +77,6 @@ export const SwipeableModal = ({
         let minPx;
         let stockDataArr: MyObject[] = [];
         for (let [key, value] of Object.entries(timeSeries)) {
-          // console.log(key)
-          // console.log(value)
 
           let newPrice = parseFloat(value["5. adjusted close"]).toFixed(2);
 
@@ -117,8 +115,6 @@ export const SwipeableModal = ({
         setStockData(stockDataArr);
         setDateMap(dateMapObj);
 
-        // console.log("stockData", stockData);
-        // console.log(dateMap);
       } catch (error) {
         console.log(error);
       }
@@ -128,11 +124,7 @@ export const SwipeableModal = ({
     } else {
       fetchDailyAdjustedData();
     }
-    // fetchIntradayAdjusted()
-    // return ()=>{
-    //     setStockData([]);
-    //     setStockIntradayPxHistory({})
-    // }
+
   }, [timePeriod]);
 
   const fetchIntradayAdjusted = async () => {
@@ -147,11 +139,11 @@ export const SwipeableModal = ({
       let i = Object.entries(timeSeries).length;
       let maxPx;
       let minPx;
-      // console.log(timeSeries);
+
       let stockDataArr: MyObject[] = [];
       for (let [key, value] of Object.entries(timeSeries)) {
         let newPrice = parseFloat(value["4. close"]).toFixed(2);
-        // console.log(newPrice)
+
         const newObj: MyObject = {
           x: i.toString(),
           y: newPrice,
@@ -182,12 +174,7 @@ export const SwipeableModal = ({
       setDateMap(dateMapObj);
       console.log("stockIntradayPXHistory", stockIntradayPxHistory);
 
-      // console.log(timeSeries)
     } catch (err) {}
-  };
-
-  const isObjectEmpty = (obj: {}) => {
-    return Object.keys(obj).length === 0;
   };
 
   const clearAllData = () => {
@@ -219,7 +206,6 @@ export const SwipeableModal = ({
       
       }
     } catch (e) {
-      // save error
       console.log(e);
     }
   };
@@ -245,8 +231,8 @@ export const SwipeableModal = ({
           <View style={{display:'flex',flexDirection:'column'}}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: "column",
+            alignItems: "flex-start",
             paddingBottom: 10,
           }}
         >
@@ -279,8 +265,7 @@ export const SwipeableModal = ({
 
         <TouchableOpacity
             style={{
-              marginLeft: 80,
-              marginBottom: 10,
+              marginLeft: 150,
               paddingTop: 10,
               paddingBottom: 10,
               backgroundColor: colors.blue,
@@ -301,7 +286,6 @@ export const SwipeableModal = ({
           </TouchableOpacity>
         </View>
         </View>
-        {/* <StockChart data={stockDailyPxHistory}/> */}
         {isLoading && (
           <ActivityIndicator size="small" color="white"/>
         )}
