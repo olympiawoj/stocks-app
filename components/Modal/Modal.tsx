@@ -137,7 +137,6 @@ export const SwipeableModal = ({
   }, [timePeriod]);
 
   const fetchIntradayAdjusted = async () => {
-    console.log("intraday running.....");
     setIsLoading(true);
     try {
       const response = await axios.get(intradayTimeSeriesURL);
@@ -207,7 +206,7 @@ export const SwipeableModal = ({
         if(stocks){
           console.log('parse', JSON.parse(stocks))
           let stocksArr= JSON.parse(stocks) 
-          if(stocksArr.length > 0){
+          if(stocksArr.length > 0 && !stocksArr.includes(stockObjInfo.symbol)){
             stocksArr.push(stockObjInfo.symbol)
             await AsyncStorage.setItem("watchlist", JSON.stringify(stocksArr));
           }

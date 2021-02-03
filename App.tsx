@@ -4,12 +4,14 @@ import { AppRegistry } from "react-native";
 import axios from "axios";
 import { Provider as PaperProvider } from "react-native-paper";
 import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
+import {handleQuote, handleCompanyOverview} from './utils/api'
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
 import { SwipeableModal } from "./components/Modal/Modal";
 import { API_KEY } from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Watchlist} from './components/Watchlist/Watchlist'
 
 interface filteredOptions {
   symbol: string;
@@ -70,7 +72,7 @@ export default function App() {
         filteredMatchesArr.forEach(async (obj: filteredOptions) => {
           const price = await handleQuote(obj.symbol);
           const companyOverview = await handleCompanyOverview(obj.symbol);
-          console.log("compayOverview", companyOverview);
+          // console.log("compayOverview", companyOverview);
           obj.price = price;
           obj.companyOverview = companyOverview;
           if (price) {
@@ -89,32 +91,8 @@ export default function App() {
     }
   };
 
-  const handleQuote = async (ticker: string) => {
-    const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${API_KEY}`;
-    try {
-      const response = await axios.get(quoteURL);
-      const searchObj = response.data["Global Quote"];
-      renameKeysObj(searchObj);
-      if (searchObj.price) {
-        return searchObj.price;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  const handleCompanyOverview = async (ticker: string) => {
-    const quoteURL = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${API_KEY}`;
-    try {
-      const response = await axios.get(quoteURL);
-      // console.log(response.data);
-      // const searchObj = response.data["Global Quote"]
-      // renameKeysObj(searchObj)
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   const handleCancelSearch = () => {
     setFilteredOptions([]);
@@ -129,25 +107,6 @@ export default function App() {
 
   const options = { month: "long", day: "numeric" };
 
-   useEffect(()=>{
-    const getData = async () => {
-      try {
-        const watchlist = await AsyncStorage.getItem('watchlist')
-        if(watchlist !== null) {
-          // value previously stored
-          console.log('value in asyncstorage', watchlist)
-          let watchlistArr= JSON.parse(watchlist) 
-    
-          
-        }
-      } catch(e) {
-        // error reading value
-      }
-    }
-    getData()
-    
-
-  },[value])
 
   return (
     <PaperProvider>
@@ -197,6 +156,11 @@ export default function App() {
               </Pressable>
             )}
           </View>
+          {filteredOptions.length === 0 && (
+             (
+              <Watchlist/>
+            )
+          )}
           {filteredOptions && filteredOptions.length > 0 && (
             <AutocompleteSearchBarResults
               filteredOptions={filteredOptions}

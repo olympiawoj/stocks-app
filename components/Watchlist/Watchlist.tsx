@@ -1,141 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { AppRegistry } from "react-native";
-import axios from "axios";
-import { Provider as PaperProvider } from "react-native-paper";
-import { renameKeysArr, renameKeysObj } from "../../utils/renameKeys";
-import { AutocompleteSearchBarResults } from "../../components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
-import { colors } from "../../utils/colors";
-import { SwipeableModal } from "../../components/Modal/Modal";
-import { API_KEY } from "react-native-dotenv";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import {Text, View} from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {handleQuote, handleCompanyOverview} from '../../utils/api'
 
-interface filteredOptions {
-  symbol: string;
-  name: string;
-  type: string;
-  region: string;
-  marketOpen: string;
-  marketClose: string;
-  timezone: string;
-  currency: string;
-  matchScore: string;
-  price?: string;
-  filteredOptions?: object;
-  companyOverview?: object;
-  length: number;
-}
-
-interface StockObjInfo {
-  currency: string;
-  marketClose: string;
-  marketOpen: string;
-  marketScore: string;
-  name: string;
-  region: string;
-  symbol: string;
-  timezone: string;
-  type: string;
+interface Watchlist {
+  ticker: string;
   price: string;
+  name: string;
+  [props: string]: string
 }
+export const Watchlist = ()=>{
 
-interface BestMatchesInfo {
-  matchScore: string;
-  region: string;
-}
+  const [myWatchlist, setMyWatchlist] = useState<Watchlist[]>([])
 
-export const WatchList = () => {
-  const [value, setValue] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState<
-    filteredOptions[] | []
-  >([]);
-  const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({});
-  const [prices, setPrices] = useState<number[] | []>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const searchURL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${API_KEY}`;
-
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(searchURL);
-      if (response.data) {
-        const bestMatchesArr = response.data["bestMatches"];
-        renameKeysArr(bestMatchesArr);
-        let filteredMatchesArr = bestMatchesArr.filter(
-          (obj: BestMatchesInfo) =>
-            parseFloat(obj.matchScore) > 0.2 && obj.region === "United States"
-        );
-        filteredMatchesArr.forEach(async (obj: filteredOptions) => {
-          const price = await handleQuote(obj.symbol);
-          const companyOverview = await handleCompanyOverview(obj.symbol);
-          // console.log("compayOverview", companyOverview);
-          obj.price = price;
-          obj.companyOverview = companyOverview;
-          if (price) {
-            setPrices((prices) => {
-              return {
-                ...prices,
-                price,
-              };
-            });
-          }
-        });
-        setFilteredOptions(filteredMatchesArr.slice(0, 4));
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  const handleQuote = async (ticker: string) => {
-    const quoteURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${API_KEY}`;
-    try {
-      const response = await axios.get(quoteURL);
-      const searchObj = response.data["Global Quote"];
-      renameKeysObj(searchObj);
-      if (searchObj.price) {
-        return searchObj.price;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleCompanyOverview = async (ticker: string) => {
-    const quoteURL = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${API_KEY}`;
-    try {
-      const response = await axios.get(quoteURL);
-      // console.log(response.data);
-      // const searchObj = response.data["Global Quote"]
-      // renameKeysObj(searchObj)
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleCancelSearch = () => {
-    setFilteredOptions([]);
-    setValue("");
-  };
-
-  const handleModalClose = () => {
-    setIsModalVisible((isModalVisible) => {
-      return !isModalVisible;
-    });
-  };
-
-  const options = { month: "long", day: "numeric" };
 
   useEffect(()=>{
+    setMyWatchlist([])
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('@storage_Key')
-        if(value !== null) {
+        const watchlist = await AsyncStorage.getItem('watchlist')
+        if(watchlist !== null) {
           // value previously stored
-          console.log('value', value)
+          console.log('value in asyncstorage', watchlist)
+          let watchlistArr= JSON.parse(watchlist) 
+          let watchlistPricesArr:Watchlist[] = [] 
+          watchlistArr.forEach((async(ticker:string) => {
+           try {
+            const price = await handleQuote(ticker)
+            const companyOverview = await handleCompanyOverview(ticker) 
+            const newStockObj = {ticker, price, name: companyOverview["Name"]} as Watchlist
+            //@ts-ignore
+            setMyWatchlist(myWatchlist => [...myWatchlist, newStockObj])
+           }
+           catch(err) {
+             console.log(err)
+           }
+          }))
+          console.log('arr', myWatchlist)
+
         }
+          
       } catch(e) {
         // error reading value
       }
@@ -143,85 +48,13 @@ export const WatchList = () => {
     getData()
     
 
-  },[value])
+  },[])
 
   return (
-    <PaperProvider>
-      <View style={styles.container}>
-        {filteredOptions.length == 0 && (
-                  <View style={{display: 'flex', flexDirection: 'row'}}>
-                  <View>
-                  <Text style={{ color: "white", fontSize: 25, fontWeight: "800" }}>
-                    Stocks
-                  </Text>
-                  <Text
-                    style={{
-                      color: colors.gunsmokeGrey,
-                      fontSize: 25,
-                      fontWeight: "800",
-                      marginBottom: 10,
-                    }}
-                  >
-                    {new Date().toLocaleDateString(undefined, options)}
-                  </Text>
-                  </View>
-                  <View style={{display: 'flex', justifyContent: 'flex-start', marginLeft: 150}}>
-                    <Text style={{ color: "#007AFF",  paddingLeft: 5, paddingTop:10, fontSize: 17}}>Edit</Text>
-                    </View>
-                  </View>
-        )}
-        <View style={styles.center}>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <SearchBar
-              value={value}
-              setValue={setValue}
-              filteredOptions={filteredOptions}
-              handleSearch={handleSearch}
-              handleCancelSearch={handleCancelSearch}
-            />
-            {filteredOptions && filteredOptions.length > 0 && (
-              <Pressable onPress={handleCancelSearch}>
-                <Text style={{ color: colors.blue, paddingBottom: 20, paddingLeft: 5}}>
-                  Cancel
-                </Text>
-              </Pressable>
-            )}
-          </View>
-          {filteredOptions && filteredOptions.length > 0 && (
-            <AutocompleteSearchBarResults
-              filteredOptions={filteredOptions}
-              prices={prices}
-              setModalVisible={setIsModalVisible}
-              setStockObjInfo={setStockObjInfo}
-            />
-          )}
-        </View>
-        {Object.keys(stockObjInfo).length > 0 && (
-          <SwipeableModal
-            isModalVisible={isModalVisible}
-            handleModalClose={handleModalClose}
-            stockObjInfo={stockObjInfo}
-          />
-        )}
-      </View>
-    </PaperProvider>
-  );
+    <View>{myWatchlist.length > 0  && myWatchlist.map(stock => {
+      return (
+        <Text style={{color: 'white'}}>{stock.name}</Text>
+      )
+    })}</View>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.black,
-    // paddingTop: 75,
-    padding: 15,
-  },
-  center: {
-    alignItems: "center",
-  },
-});
