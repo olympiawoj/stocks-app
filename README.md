@@ -16,7 +16,7 @@
 2. Run `npm install` and then `npm start`
 
 
-## Tecks Stack:
+## Tech Stack:
 - [react native](https://reactnative.dev/)
 - [typescript](https://www.typescriptlang.org/)
 - [react native responsive linechart](https://react-native-responsive-linechart.surge.sh/)
