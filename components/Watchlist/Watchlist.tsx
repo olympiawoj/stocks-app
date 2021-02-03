@@ -31,7 +31,7 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
         if (watchlist !== null) {
           // value previously stored1
           let watchlistArr = JSON.parse(watchlist);
-          watchlistArr.forEach(async (ticker: string) => {
+          watchlistArr.length > 0 && watchlistArr.forEach(async (ticker: string) => {
             try {
               const price = await handleQuote(ticker);
               const companyOverview = await handleCompanyOverview(ticker);
@@ -40,9 +40,10 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
                 price,
                 companyOverview: companyOverview,
                 name: companyOverview["Name"],
-              } as Watchlist;
+              }
               //@ts-ignore
-              setMyWatchlist((myWatchlist) => [...myWatchlist, newStockObj]);
+              setMyWatchlist((myPrevWatchlist) => [...myPrevWatchlist, newStockObj]);
+
               setIsLoading(false);
             } catch (err) {
               console.log(err);
@@ -57,6 +58,7 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
     getData();
   }, []);
 
+  console.log({myWatchlist})
   return (
     <View>
       {isLoading && <ActivityIndicator size="small" color="white" />}
@@ -64,12 +66,12 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
         <FlatList
           keyExtractor={(item) => item.name}
           data={myWatchlist}
-          renderItem={({ item }) => (
+          renderItem={({item} ) => (
+            item &&
             <Swipeable
               friction={2}
               leftThreshold={125}
               overshootFriction={50}
-              onSwipeableOpen={() => console.log("swipe opening")}
               renderRightActions={() => (
                 <TouchableOpacity
                   style={{
@@ -109,15 +111,15 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
                   height: 75,
                 }}
                 onPress={()=>{
-                  setStockObjInfo( item)
+                  setStockObjInfo(item)
                   setModalVisible(true)
                 }}
               >
-                <View>
+                 <View>
                   <Text
                     style={{ color: "white", fontSize: 17, fontWeight: "bold" }}
                   >
-                    {item.symbol}
+                    {item.symbol.toString()}
                   </Text>
                   <Text key={item.name} style={{ color: colors.gunsmokeGrey }}>
                     {item.name}
@@ -126,7 +128,7 @@ export const Watchlist = ({setStockObjInfo, setModalVisible}) => {
                 <Text style={{ color: "white", fontWeight: "bold" }}>
                   {item.price?.slice(0, -2)}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> 
             </Swipeable>
           )}
         />
