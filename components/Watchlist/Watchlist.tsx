@@ -1,10 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View , FlatList} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { handleQuote, handleCompanyOverview } from "../../utils/api";
 import { colors } from "../../utils/colors";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { GestureHandlerGestureEvent, GestureHandlerGestureEventNativeEvent, TouchableOpacity } from "react-native-gesture-handler";
+import { GestureResponderEvent } from "react-native";
 
 interface Watchlist {
   ticker: string;
@@ -49,61 +51,71 @@ export const Watchlist = () => {
     getData();
   }, []);
 
-  const removeTicker = () =>{
-    // TO DO: async storage remove
-  }
 
   return (
     <View>
-      {myWatchlist.length > 0 &&
-        myWatchlist.map((stock) => {
-          return (
-            <Swipeable
-              friction={2}
-              leftThreshold={125}
-              onSwipeableOpen={() => console.log("swipe opening")}
-              renderRightActions={() => (
-                <View
-                  style={{
-                    backgroundColor: "red",
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    marginRight: 16,
-                    padding: 10
-                  }}
-                  onClick={removeTicker}
-                >
-                  <Text style={{color: 'white', fontWeight: 'bold'}}>Remove</Text>
-                </View>
-              )}
+     { myWatchlist.length > 0 && 
+     <FlatList
+        keyExtractor={(item) => item.name}
+        data={myWatchlist}
+        renderItem={({item})=> (
+          <Swipeable
+          friction={2}
+          leftThreshold={125}
+          overshootFriction={50}
+          onSwipeableOpen={() => console.log("swipe opening")}
+          renderRightActions={() => (
+            <TouchableOpacity
+              style={{
+                backgroundColor: "red",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                marginRight: 16,
+                padding: 10,
+                height: 75
+              }}
+              //@tsignor
+              onPress={()=>{
+                let newWatchlist = [...myWatchlist]
+                // console.log(newWatchlist, stock)
+                //@ts-ignore
+                newWatchlist = newWatchlist.filter((stockObj) => stockObj.name !== item.name)
+                setMyWatchlist(newWatchlist)
+              }}
             >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignContent: "center",
-                  padding: 10,
-                  width: 350,
-                  height: 75,
-                }}
-              >
-                <View>
-                  <Text style={{ color: "white", fontSize: 17, fontWeight: 'bold' }}>
-                    {stock.ticker}
-                  </Text>
-                  <Text key={stock.name} style={{ color: colors.gunsmokeGrey }}>
-                    {stock.name}
-                  </Text>
-                </View>
-                <Text style={{ color: "white", fontWeight: 'bold' }}>
-                  {stock.price?.slice(0, -2)}
-                </Text>
-              </View>
-            </Swipeable>
-          );
-        })}
+              <Text style={{color: 'white', fontWeight: 'bold'}}>Remove</Text>
+            </TouchableOpacity>
+          )}
+        >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignContent: "center",
+              padding: 10,
+              width: 350,
+              height: 75,
+            }}
+          >
+            <View>
+              <Text style={{ color: "white", fontSize: 17, fontWeight: 'bold' }}>
+                {item.ticker}
+              </Text>
+              <Text key={item.name} style={{ color: colors.gunsmokeGrey }}>
+                {item.name}
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontWeight: 'bold' }}>
+              {item.price?.slice(0, -2)}
+            </Text>
+          </View>
+        </Swipeable>
+        )}
+
+      />
+}
     </View>
   );
 };
