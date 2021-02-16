@@ -1,57 +1,22 @@
-import React, { useState, useEffect} from "react";
+import React, { useState} from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { AppRegistry } from "react-native";
 import axios from "axios";
 import { Provider as PaperProvider } from "react-native-paper";
-import { renameKeysArr, renameKeysObj } from "./utils/renameKeys";
+import { renameKeysArr } from "./utils/renameKeys";
 import {handleQuote, handleCompanyOverview} from './utils/api'
 import { AutocompleteSearchBarResults } from "./components/AutocompleteSearchBarResults/AutocompleteSearchBarResults";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { colors } from "./utils/colors";
 import { SwipeableModal } from "./components/Modal/Modal";
 import { API_KEY } from "react-native-dotenv";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Watchlist} from './components/Watchlist/Watchlist'
-
-interface filteredOptions {
-  symbol: string;
-  name: string;
-  type: string;
-  region: string;
-  marketOpen: string;
-  marketClose: string;
-  timezone: string;
-  currency: string;
-  matchScore: string;
-  price?: string;
-  filteredOptions?: object;
-  companyOverview?: object;
-  length: number;
-}
-
-
-interface StockObjInfo {
-  currency: string;
-  marketClose: string;
-  marketOpen: string;
-  marketScore: string;
-  name: string;
-  region: string;
-  symbol: string;
-  timezone: string;
-  type: string;
-  price: string;
-}
-
-interface BestMatchesInfo {
-  matchScore: string;
-  region: string;
-}
+import {FilteredOptions, StockObjInfo, BestMatchesInfo} from './App.schema'
 
 export default function App() {
   const [value, setValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<
-    filteredOptions[] | []
+  FilteredOptions[] | []
   >([]);
   const [stockObjInfo, setStockObjInfo] = useState<StockObjInfo | {}>({});
   const [prices, setPrices] = useState<number[] | []>([]);
@@ -70,7 +35,7 @@ export default function App() {
           (obj: BestMatchesInfo) =>
             parseFloat(obj.matchScore) > 0.2 && obj.region === "United States"
         );
-        filteredMatchesArr.forEach(async (obj: filteredOptions) => {
+        filteredMatchesArr.forEach(async (obj: FilteredOptions) => {
           const price = await handleQuote(obj.symbol);
           const companyOverview = await handleCompanyOverview(obj.symbol);
           obj.price = price;
